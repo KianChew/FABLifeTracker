@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Life Tracker - Setup</title>
+<style>
+  @font-face { font-family: 'system'; src: local('Arial'); }
+  :root {
+    --void: #0D0D12;
+    --panel: #16151C;
+    --panel-deep: #100F15;
+    --ink: #F2F0E9;
+    --ink-dim: #8B8894;
+    --p1: #D64545;
+    --p2: #3B6FA0;
+    --brass: #E0B84B;
+    --rule: #2A2833;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--void);
+    color: var(--ink);
+    font-family: -apple-system, 'Segoe UI', Inter, sans-serif;
+    padding: 24px;
+  }
+  .app {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .eyebrow {
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--brass);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  h1 {
+    margin: 0 0 4px;
+    font-size: 30px;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--p1), var(--brass) 50%, var(--p2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.01em;
+  }
+  h2 {
+    margin: 0 0 16px;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--ink-dim);
+  }
+  h2:not(:first-child) { margin-top: 28px; }
+  .sub { color: var(--ink-dim); margin: 0 0 28px; font-size: 15px; }
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 26px;
+  }
+  .row {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 148px;
+    padding: 18px;
+    background: var(--panel-deep);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+  }
+  .label {
+    font-size: 12px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  .url {
+    font-family: 'JetBrains Mono', Menlo, monospace;
+    font-size: 13px;
+    margin-top: 6px;
+    overflow-wrap: anywhere;
+  }
+  .btn, button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  a.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--void);
+    background: var(--brass);
+  }
+  button.primary { background: var(--brass); color: var(--void); }
+  button.ghost { background: rgba(255,255,255,0.06); color: var(--ink); }
+  button.danger { background: transparent; border: 1px solid var(--p1); color: var(--p1); }
+  button:disabled { cursor: not-allowed; opacity: 0.45; }
+  .desk {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
+    gap: 18px;
+    border-top: 1px solid var(--rule);
+    padding-top: 26px;
+  }
+  .panel {
+    background: var(--panel-deep);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .field-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .field-row { margin-bottom: 12px; }
+  .field-row label {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 6px;
+  }
+  input, select {
+    width: 100%;
+    background: #0D0D12;
+    border: 1px solid var(--rule);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 15px;
+    font-family: inherit;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--brass); }
+  .seg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .seg button {
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--ink-dim);
+  }
+  .seg button.active {
+    background: var(--brass);
+    color: var(--void);
+    border-color: var(--brass);
+  }
+  .duration-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .step-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 0;
+    background: rgba(255,255,255,0.06);
+    color: var(--ink);
+    font-size: 24px;
+    font-weight: 300;
+  }
+  .duration-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px;
+    font-weight: 700;
+    min-width: 5ch;
+    text-align: center;
+    color: var(--brass);
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .actions button { flex: 1; }
+  .player-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .player-box {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .player-box.p1 { border-top: 3px solid var(--p1); }
+  .player-box.p2 { border-top: 3px solid var(--p2); }
+  .life {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .player-box.p1 .life { color: var(--p1); }
+  .player-box.p2 .life { color: var(--p2); }
+  .hero {
+    min-height: 18px;
+    color: var(--ink-dim);
+    font-size: 13px;
+    margin-top: 5px;
+  }
+  .hint {
+    color: var(--ink-dim);
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin: 6px 0 0;
+  }
+  .hero-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-row .hname { font-weight: 700; font-size: 14px; }
+  .hero-row .hlives { color: var(--ink-dim); font-size: 12px; margin-top: 3px; }
+  .hero-row button { padding: 7px 10px; font-size: 12px; background: rgba(255,255,255,0.06); color: var(--ink); }
+  .hero-row button.del { color: var(--p1); }
+  .hero-form {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+  }
+  .note {
+    margin-top: 26px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink-dim);
+    border-top: 1px solid var(--rule);
+    padding-top: 20px;
+  }
+  .note b { color: var(--ink); }
+  code { background: #1F1D28; padding: 2px 6px; border-radius: 4px; }
+  @media (max-width: 860px) {
+    body { padding: 14px; }
+    .card { padding: 22px; }
+    .link-grid, .desk { grid-template-columns: 1fr; }
+    .row { min-height: 0; }
+  }
+  @media (max-width: 560px) {
+    .field-pair, .player-summary { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <div class="card">
+      <div class="eyebrow">Local network</div>
+      <h1>Life Tracker</h1>
+      <p class="sub">Use this PC page for match setup. Give players the controller for life and timer controls.</p>
+
+      <div class="link-grid">
+        <div class="row">
+          <div>
+            <div class="label">Tablet controller</div>
+            <div class="url" id="controllerUrl">loading...</div>
+          </div>
+          <a class="btn" id="controllerLink" href="/controller.html" target="_blank">Open</a>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="label">OBS overlay</div>
+            <div class="url" id="overlayUrl">loading...</div>
+          </div>
+          <a class="btn" id="overlayLink" href="/overlay.html" target="_blank">Open</a>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="label">Overlay layout editor</div>
+            <div class="url">Set resolution and drag/resize the badges and timer</div>
+          </div>
+          <a class="btn" href="/editor.html" target="_blank">Open</a>
+        </div>
+      </div>
+
+      <div class="desk">
+        <div class="panel">
+          <h2>Match Control</h2>
+          <div class="player-summary">
+            <div class="player-box p1">
+              <div class="label" id="summaryName0">Player 1</div>
+              <div class="life" id="summaryLife0">20</div>
+              <div class="hero" id="summaryHero0"></div>
+            </div>
+            <div class="player-box p2">
+              <div class="label" id="summaryName1">Player 2</div>
+              <div class="life" id="summaryLife1">20</div>
+              <div class="hero" id="summaryHero1"></div>
+            </div>
+          </div>
+
+          <h2>Match Setup</h2>
+          <p class="hint" id="setupStatus">Choose the match details below. The tablet sees these changes live.</p>
+          <div class="field-pair">
+            <div class="field-row"><label>Player 1</label><input id="pcName0" maxlength="24" /></div>
+            <div class="field-row"><label>Player 2</label><input id="pcName1" maxlength="24" /></div>
+          </div>
+
+          <div class="seg">
+            <button id="modeCountdown" class="active">Countdown</button>
+            <button id="modeStopwatch">Stopwatch</button>
+          </div>
+          <div id="durationSection">
+            <div class="duration-row">
+              <button class="step-btn" id="durMinus">-</button>
+              <div class="duration-val" id="durationVal">30:00</div>
+              <button class="step-btn" id="durPlus">+</button>
+            </div>
+          </div>
+          <div class="seg">
+            <button class="format-card active" data-format="cc">Classic Constructed</button>
+            <button class="format-card" data-format="sage">Silver Age</button>
+          </div>
+          <div class="field-pair">
+            <div class="field-row"><label id="heroLabel0">Player 1 hero</label><select id="heroSelect0"></select></div>
+            <div class="field-row"><label id="heroLabel1">Player 2 hero</label><select id="heroSelect1"></select></div>
+          </div>
+          <button class="primary" id="confirmMatchBtn" disabled>Start New Match</button>
+          <p class="hint">Heroes are filtered to the selected format and set life totals automatically.</p>
+          <div class="actions">
+            <button class="ghost" id="openSetupBtn">Edit setup</button>
+            <button class="danger" id="resetLifeBtn">Reset match</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Manage Heroes</h2>
+          <div class="actions" style="margin: 0 0 12px;">
+            <button class="primary" id="importHeroesBtn">Import from CardVault</button>
+          </div>
+          <p class="hint" id="importStatus">Manual hero edits are still available below.</p>
+          <div id="heroManagerList"></div>
+
+          <div class="hero-form">
+            <h2 id="heroFormTitle">Add Hero</h2>
+            <div class="field-row"><label>Hero name</label><input id="heroFormName" maxlength="40" placeholder="e.g. Dorinthea Ironsong" /></div>
+            <div class="field-pair">
+              <div class="field-row"><label>CC life</label><input id="heroFormCC" type="number" inputmode="numeric" placeholder="e.g. 40" /></div>
+              <div class="field-row"><label>SAGE life</label><input id="heroFormSage" type="number" inputmode="numeric" placeholder="e.g. 20" /></div>
+            </div>
+            <p class="hint">Leave a life field blank if this hero does not exist in that format.</p>
+            <div class="actions">
+              <button class="primary" id="heroFormSave">Save hero</button>
+              <button class="ghost" id="heroFormCancel">Clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>Setup:</b> make sure the tablet and this PC are on the <b>same WiFi network</b>. On the tablet's browser, type
+        the "Tablet controller" address above exactly. In OBS, add a <b>Browser Source</b>, paste the overlay address,
+        set its width/height to match the resolution you pick in the layout editor, and check
+        <code>Shutdown source when not visible</code> off so it keeps syncing.
+      </div>
+    </div>
+  </div>
+
+<script>
+const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+const ws = new WebSocket(`${proto}://${location.host}`);
+let state = null;
+let pendingDurationMs = 30 * 60000;
+let pendingMode = 'countdown';
+let pendingFormat = 'cc';
+let pendingHeroSelection = [null, null];
+let editingHeroId = null;
+let lastHeroesKey = '';
+
+function send(msg) {
+  if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(msg));
+}
+
+function fmt(ms) {
+  const totalSec = Math.max(0, Math.round(ms / 1000));
+  return `${Math.floor(totalSec / 60)}:${String(totalSec % 60).padStart(2, '0')}`;
+}
+
+function setInputValue(id, value) {
+  const el = document.getElementById(id);
+  if (document.activeElement !== el) el.value = value;
+}
+
+ws.onmessage = (evt) => {
+  const msg = JSON.parse(evt.data);
+  if (msg.type === 'state') render(msg.state);
+};
+
+function render(s) {
+  const firstRender = !state;
+  state = s;
+
+  s.players.forEach((p, i) => {
+    const setupName = s.setup?.names?.[i] || p.name;
+    document.getElementById('summaryName' + i).textContent = p.name;
+    document.getElementById('summaryLife' + i).textContent = p.life;
+    document.getElementById('summaryHero' + i).textContent = p.heroName || 'No hero selected';
+    document.getElementById('heroLabel' + i).textContent = `${p.name} hero`;
+    setInputValue('pcName' + i, setupName);
+  });
+
+  if (firstRender) {
+    pendingDurationMs = s.setup?.durationMs || s.timer.durationMs;
+    pendingMode = s.setup?.timerMode || s.timer.mode;
+    pendingFormat = s.setup?.format || s.lastFormat || 'cc';
+    pendingHeroSelection = s.setup?.heroIds || s.players.map((p) => p.heroId);
+  }
+  if (s.setup && s.phase !== 'live') {
+    pendingDurationMs = s.setup.durationMs;
+    pendingMode = s.setup.timerMode;
+    pendingFormat = s.setup.format;
+    pendingHeroSelection = [...s.setup.heroIds];
+  }
+  document.getElementById('setupStatus').textContent = s.phase === 'live'
+    ? 'Live match. Edit setup and start again when you are ready for the next round.'
+    : 'Setup is shared with the tablet. Either side can make changes before starting.';
+
+  const importStatus = document.getElementById('importStatus');
+  const importBtn = document.getElementById('importHeroesBtn');
+  importStatus.textContent = s.heroImport?.message || 'Manual hero edits are still available below.';
+  importBtn.disabled = Boolean(s.heroImport?.running);
+  importBtn.textContent = s.heroImport?.running ? 'Importing...' : 'Import from CardVault';
+
+  updateTimerUI();
+
+  const heroesKey = JSON.stringify(s.heroes);
+  if (firstRender || heroesKey !== lastHeroesKey) {
+    lastHeroesKey = heroesKey;
+    renderHeroSelects();
+    renderHeroManagerList();
+  }
+}
+
+function updateTimerUI() {
+  document.getElementById('modeCountdown').classList.toggle('active', pendingMode === 'countdown');
+  document.getElementById('modeStopwatch').classList.toggle('active', pendingMode === 'stopwatch');
+  document.getElementById('durationSection').style.display = pendingMode === 'countdown' ? 'block' : 'none';
+  document.getElementById('durationVal').textContent = fmt(pendingDurationMs);
+}
+
+function renderHeroSelects() {
+  if (!state) return;
+  document.querySelectorAll('.format-card').forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.format === pendingFormat);
+  });
+
+  const lifeKey = pendingFormat === 'cc' ? 'ccLife' : 'sageLife';
+  const eligible = state.heroes.filter((h) => h[lifeKey] != null);
+
+  [0, 1].forEach((i) => {
+    const select = document.getElementById('heroSelect' + i);
+    const currentValue = pendingHeroSelection[i] || '';
+    select.innerHTML = '';
+
+    const empty = document.createElement('option');
+    empty.value = '';
+    empty.textContent = eligible.length ? 'Select a hero' : 'No heroes for this format';
+    select.appendChild(empty);
+
+    eligible.forEach((h) => {
+      const opt = document.createElement('option');
+      opt.value = h.id;
+      opt.textContent = `${h.name} (${h[lifeKey]} life)`;
+      select.appendChild(opt);
+    });
+
+    select.value = eligible.some((h) => h.id === currentValue) ? currentValue : '';
+    pendingHeroSelection[i] = select.value || null;
+  });
+
+  document.getElementById('confirmMatchBtn').disabled = !(pendingHeroSelection[0] && pendingHeroSelection[1]);
+}
+
+function renderHeroManagerList() {
+  if (!state) return;
+  const container = document.getElementById('heroManagerList');
+  container.innerHTML = '';
+
+  if (!state.heroes.length) {
+    const empty = document.createElement('div');
+    empty.className = 'hint';
+    empty.textContent = 'No heroes added yet.';
+    container.appendChild(empty);
+    return;
+  }
+
+  state.heroes.forEach((h) => {
+    const row = document.createElement('div');
+    row.className = 'hero-row';
+
+    const text = document.createElement('div');
+    const name = document.createElement('div');
+    name.className = 'hname';
+    name.textContent = h.name;
+    const lives = document.createElement('div');
+    lives.className = 'hlives';
+    lives.textContent = [
+      h.ccLife != null ? `CC ${h.ccLife}` : null,
+      h.sageLife != null ? `SAGE ${h.sageLife}` : null,
+    ].filter(Boolean).join(' / ') || 'No life totals set';
+    text.append(name, lives);
+
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.addEventListener('click', () => openHeroForm(h));
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'del';
+    delBtn.textContent = 'Delete';
+    delBtn.addEventListener('click', () => {
+      if (confirm(`Delete "${h.name}"?`)) send({ type: 'hero:delete', id: h.id });
+    });
+
+    row.append(text, editBtn, delBtn);
+    container.appendChild(row);
+  });
+}
+
+function openHeroForm(hero) {
+  editingHeroId = hero ? hero.id : null;
+  document.getElementById('heroFormTitle').textContent = hero ? 'Edit Hero' : 'Add Hero';
+  document.getElementById('heroFormName').value = hero ? hero.name : '';
+  document.getElementById('heroFormCC').value = hero && hero.ccLife != null ? hero.ccLife : '';
+  document.getElementById('heroFormSage').value = hero && hero.sageLife != null ? hero.sageLife : '';
+}
+
+function clearHeroForm() {
+  openHeroForm(null);
+}
+
+[0, 1].forEach((i) => {
+  document.getElementById('pcName' + i).addEventListener('change', (e) => {
+    send({ type: 'match:setup:update', field: 'name', player: i, value: e.target.value });
+  });
+  document.getElementById('heroSelect' + i).addEventListener('change', (e) => {
+    pendingHeroSelection[i] = e.target.value || null;
+    send({ type: 'match:setup:update', field: 'hero', player: i, value: pendingHeroSelection[i] });
+    renderHeroSelects();
+  });
+});
+
+document.getElementById('modeCountdown').addEventListener('click', () => {
+  pendingMode = 'countdown';
+  send({ type: 'match:setup:update', field: 'timerMode', value: pendingMode });
+  updateTimerUI();
+});
+document.getElementById('modeStopwatch').addEventListener('click', () => {
+  pendingMode = 'stopwatch';
+  send({ type: 'match:setup:update', field: 'timerMode', value: pendingMode });
+  updateTimerUI();
+});
+document.getElementById('durMinus').addEventListener('click', () => {
+  pendingDurationMs = Math.max(60000, pendingDurationMs - 60000);
+  send({ type: 'match:setup:update', field: 'duration', value: pendingDurationMs });
+  updateTimerUI();
+});
+document.getElementById('durPlus').addEventListener('click', () => {
+  pendingDurationMs = Math.min(180 * 60000, pendingDurationMs + 60000);
+  send({ type: 'match:setup:update', field: 'duration', value: pendingDurationMs });
+  updateTimerUI();
+});
+document.getElementById('resetLifeBtn').addEventListener('click', () => {
+  if (!confirm('Open a fresh match setup? The current live match will remain visible until you start the next match.')) return;
+  send({ type: 'match:setup:open' });
+});
+document.getElementById('openSetupBtn').addEventListener('click', () => send({ type: 'match:setup:open' }));
+
+document.querySelectorAll('.format-card').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    pendingFormat = btn.dataset.format;
+    pendingHeroSelection = [null, null];
+    send({ type: 'match:setup:update', field: 'format', value: pendingFormat });
+    renderHeroSelects();
+  });
+});
+
+document.getElementById('confirmMatchBtn').addEventListener('click', () => {
+  const p1Hero = document.getElementById('heroSelect0').selectedOptions[0]?.textContent || 'selected hero';
+  const p2Hero = document.getElementById('heroSelect1').selectedOptions[0]?.textContent || 'selected hero';
+  const formatName = pendingFormat === 'cc' ? 'Classic Constructed' : 'Silver Age';
+  const names = [0, 1].map((i) => document.getElementById('pcName' + i).value.trim() || `Player ${i + 1}`);
+  if (!confirm(`Start a new ${formatName} match?\n\n${names[0]}: ${p1Hero}\n${names[1]}: ${p2Hero}\n\nThis will replace the current life totals.`)) return;
+  send({
+    type: 'match:start',
+    format: pendingFormat,
+    heroIds: pendingHeroSelection,
+    names,
+    timerMode: pendingMode,
+    durationMs: pendingDurationMs,
+  });
+});
+
+document.getElementById('heroFormSave').addEventListener('click', () => {
+  const name = document.getElementById('heroFormName').value.trim();
+  if (!name) {
+    alert('Please enter a hero name.');
+    return;
+  }
+  const ccLife = document.getElementById('heroFormCC').value;
+  const sageLife = document.getElementById('heroFormSage').value;
+  if (editingHeroId) {
+    send({ type: 'hero:update', id: editingHeroId, name, ccLife, sageLife });
+  } else {
+    send({ type: 'hero:add', name, ccLife, sageLife });
+  }
+  clearHeroForm();
+});
+document.getElementById('heroFormCancel').addEventListener('click', clearHeroForm);
+
+document.getElementById('importHeroesBtn').addEventListener('click', () => {
+  if (!confirm('Import hero life totals from CardVault? Existing heroes with matching names will be updated.')) return;
+  send({ type: 'hero:importCardVault' });
+});
+
+fetch('/api/network').then(r => r.json()).then(({ip, port}) => {
+  const controllerUrl = `http://${ip}:${port}/controller.html`;
+  const overlayUrl = `http://${ip}:${port}/overlay.html`;
+  document.getElementById('controllerUrl').textContent = controllerUrl;
+  document.getElementById('overlayUrl').textContent = overlayUrl;
+  document.getElementById('controllerLink').href = controllerUrl;
+  document.getElementById('overlayLink').href = overlayUrl;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Life Tracker — Overlay Layout Editor</title>
+<style>
+  :root {
+    --void: #0D0D12;
+    --panel: #16151C;
+    --ink: #F2F0E9;
+    --ink-dim: #8B8894;
+    --p1: #D64545;
+    --p2: #3B6FA0;
+    --brass: #E0B84B;
+    --rule: #2A2833;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%; background: var(--void); color: var(--ink);
+    font-family: -apple-system, 'Segoe UI', Inter, sans-serif; overflow: hidden;
+  }
+  .app { display: flex; flex-direction: column; height: 100vh; }
+
+  .topbar {
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+    padding: 12px 20px; background: var(--panel); border-bottom: 1px solid var(--rule);
+  }
+  .topbar h1 { font-size: 15px; margin: 0; font-weight: 700; letter-spacing: .04em; }
+  .topbar h1 span { color: var(--brass); }
+  .field { display: flex; align-items: center; gap: 8px; }
+  .field label { font-size: 12px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: .06em; }
+  select, input[type=number] {
+    background: #100F15; border: 1px solid var(--rule); color: var(--ink);
+    border-radius: 6px; padding: 7px 10px; font-size: 13px; font-family: inherit;
+  }
+  input[type=number] { width: 78px; }
+  .btn {
+    border: none; border-radius: 8px; padding: 9px 16px; font-weight: 700; font-size: 13px;
+    cursor: pointer; background: rgba(255,255,255,0.06); color: var(--ink);
+  }
+  .btn.primary { background: var(--brass); color: var(--void); }
+  .btn.danger { background: transparent; border: 1px solid var(--p1); color: var(--p1); }
+  .spacer { flex: 1; }
+  a.back { color: var(--ink-dim); font-size: 13px; text-decoration: none; }
+  a.back:hover { color: var(--ink); }
+
+  .stage-wrap {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    overflow: auto; padding: 24px; min-height: 0;
+    background-image: linear-gradient(45deg, #1b1a22 25%, transparent 25%),
+      linear-gradient(-45deg, #1b1a22 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #1b1a22 75%),
+      linear-gradient(-45deg, transparent 75%, #1b1a22 75%);
+    background-size: 24px 24px;
+    background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+  }
+  #canvas {
+    position: relative; background: rgba(255,255,255,0.02);
+    outline: 1px dashed rgba(255,255,255,0.2); flex-shrink: 0;
+  }
+
+  .el {
+    position: absolute; cursor: grab; touch-action: none;
+    outline: 1px solid transparent;
+  }
+  .el:hover, .el.dragging { outline: 1px solid var(--brass); }
+  .el.dragging { cursor: grabbing; }
+
+  .badge {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: transparent; pointer-events: none;
+  }
+  .badge-name { font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(242,240,233,0.65); }
+  .badge-life { font-family: 'JetBrains Mono', monospace; font-weight: 800; line-height: 1; }
+  .badge.p1 .badge-life { color: var(--p1); }
+  .badge.p2 .badge-life { color: var(--p2); }
+  .life-bar {
+    position: relative; width: 78%; height: 34%; min-height: 12px; overflow: hidden;
+    display: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(0,0,0,0.42);
+  }
+  .life-bar-fill { position: absolute; inset: 0 auto 0 0; width: 100%; }
+  .life-bar-value {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: var(--ink); font-family: 'JetBrains Mono', monospace; font-weight: 800;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+  }
+  .badge.p1 .life-bar-fill { background: var(--p1); }
+  .badge.p2 .life-bar-fill { background: var(--p2); }
+
+  .hero-art-preview {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 12%/10%;
+    background: rgba(13,13,18,0.55);
+    pointer-events: none;
+  }
+  .hero-art-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .timer-capsule {
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: rgba(13,13,18,0.72); border: 1px solid rgba(224,184,75,0.4);
+    border-radius: 999px; pointer-events: none;
+  }
+  .timer-dot { border-radius: 50%; background: var(--brass); flex-shrink: 0; }
+  .timer-digits { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--brass); }
+
+  .handle {
+    position: absolute; width: 16px; height: 16px; right: -8px; bottom: -8px;
+    background: var(--brass); border-radius: 4px; cursor: nwse-resize;
+    border: 2px solid var(--void);
+  }
+  .el-label {
+    position: absolute; top: -22px; left: 0; font-size: 11px; color: var(--ink-dim);
+    text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <h1>Overlay <span>Layout Editor</span></h1>
+
+    <div class="field">
+      <label>Resolution</label>
+      <select id="presetSelect">
+        <option value="1920x1080">1920 × 1080 (Full HD)</option>
+        <option value="2560x1440">2560 × 1440 (QHD)</option>
+        <option value="3840x2160">3840 × 2160 (4K)</option>
+        <option value="1280x720">1280 × 720 (HD)</option>
+        <option value="custom">Custom…</option>
+      </select>
+    </div>
+    <div class="field" id="customFields" style="display:none;">
+      <input type="number" id="customW" placeholder="W" min="320" />
+      <span style="color:var(--ink-dim)">×</span>
+      <input type="number" id="customH" placeholder="H" min="180" />
+      <button class="btn" id="applyCustom">Set</button>
+    </div>
+
+    <button class="btn danger" id="resetLayoutBtn">Reset layout</button>
+    <label class="field" style="cursor:pointer;">
+      <input type="checkbox" id="linkPlayerSizes" checked />
+      <span style="font-size:12px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.06em;">Link player sizes</span>
+    </label>
+    <div class="field">
+      <label for="displayMode0">P1 life</label>
+      <select id="displayMode0">
+        <option value="numeric">Numeric</option>
+        <option value="healthbar">Health bar</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="displayMode1">P2 life</label>
+      <select id="displayMode1">
+        <option value="numeric">Numeric</option>
+        <option value="healthbar">Health bar</option>
+      </select>
+    </div>
+
+    <div class="spacer"></div>
+    <a class="back" href="/index.html">← Back to setup</a>
+  </div>
+
+  <div class="stage-wrap">
+    <div id="canvas">
+      <div class="el" id="elP1Hero" data-id="p1Hero">
+        <div class="el-label">Player 1 hero art</div>
+        <div class="hero-art-preview"><img id="heroArt0" alt="" /></div>
+        <div class="handle"></div>
+      </div>
+      <div class="el" id="elP2Hero" data-id="p2Hero">
+        <div class="el-label">Player 2 hero art</div>
+        <div class="hero-art-preview"><img id="heroArt1" alt="" /></div>
+        <div class="handle"></div>
+      </div>
+      <div class="el" id="elP1" data-id="p1">
+        <div class="el-label">Player 1 badge</div>
+        <div class="badge p1">
+          <div class="badge-name" id="name0">Player 1</div>
+          <div class="badge-life" id="life0">20</div>
+          <div class="life-bar" id="lifeBar0"><div class="life-bar-fill"></div><div class="life-bar-value">20</div></div>
+        </div>
+        <div class="handle"></div>
+      </div>
+      <div class="el" id="elP2" data-id="p2">
+        <div class="el-label">Player 2 badge</div>
+        <div class="badge p2">
+          <div class="badge-name" id="name1">Player 2</div>
+          <div class="badge-life" id="life1">20</div>
+          <div class="life-bar" id="lifeBar1"><div class="life-bar-fill"></div><div class="life-bar-value">20</div></div>
+        </div>
+        <div class="handle"></div>
+      </div>
+      <div class="el" id="elTimer" data-id="timer">
+        <div class="el-label">Timer</div>
+        <div class="timer-capsule"><div class="timer-dot" id="timerDot"></div><div class="timer-digits" id="timerDigits">30:00</div></div>
+        <div class="handle"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+const ws = new WebSocket(`${proto}://${location.host}`);
+let state = null;
+let scale = 1;
+
+function send(msg) { if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(msg)); }
+function fmt(ms) {
+  const totalSec = Math.max(0, Math.round(ms / 1000));
+  return `${Math.floor(totalSec / 60)}:${String(totalSec % 60).padStart(2, '0')}`;
+}
+
+function maxLifeForPlayer(s, player) {
+  const hero = s.heroes.find((h) => h.id === player.heroId);
+  if (!hero) return Math.max(1, s.startingLife || 20);
+  const life = s.lastFormat === 'sage' ? hero.sageLife : hero.ccLife;
+  return Math.max(1, life || s.startingLife || 20);
+}
+
+function renderLifeDisplay(index, player, box) {
+  const mode = box?.displayMode === 'healthbar' ? 'healthbar' : 'numeric';
+  const lifeEl = document.getElementById('life' + index);
+  const bar = document.getElementById('lifeBar' + index);
+  const fill = bar.querySelector('.life-bar-fill');
+  const value = bar.querySelector('.life-bar-value');
+  const percent = Math.max(0, Math.min(100, (player.life / maxLifeForPlayer(state, player)) * 100));
+
+  lifeEl.style.display = mode === 'numeric' ? 'block' : 'none';
+  bar.style.display = mode === 'healthbar' ? 'block' : 'none';
+  fill.style.width = percent + '%';
+  value.textContent = player.life;
+}
+
+ws.onmessage = (evt) => {
+  const msg = JSON.parse(evt.data);
+  if (msg.type === 'state') render(msg.state);
+};
+
+let dragging = null; // { id, mode: 'move'|'resize', startX, startY, box }
+
+function render(s) {
+  state = s;
+
+  s.players.forEach((p, i) => {
+    document.getElementById('name' + i).textContent = p.name;
+    renderLifeDisplay(i, p, s.layout.elements['p' + (i + 1)]);
+    const hero = s.heroes.find((h) => h.id === p.heroId);
+    const heroArt = document.getElementById('heroArt' + i);
+    if (hero && hero.artPath) {
+      heroArt.src = hero.artPath;
+      heroArt.style.display = 'block';
+    } else {
+      heroArt.removeAttribute('src');
+      heroArt.style.display = 'none';
+    }
+  });
+  const t = s.timer;
+  document.getElementById('timerDigits').textContent = fmt(t.mode === 'countdown' ? t.remainingMs : t.elapsedMs);
+  document.getElementById('timerDot').classList.toggle('running', t.running);
+  document.getElementById('displayMode0').value = s.layout.elements.p1.displayMode || 'numeric';
+  document.getElementById('displayMode1').value = s.layout.elements.p2.displayMode || 'numeric';
+
+  if (!dragging) layoutCanvas(s.layout);
+  syncPresetUI(s.layout.canvas);
+}
+
+function layoutCanvas(layout) {
+  const canvas = document.getElementById('canvas');
+  const wrap = document.querySelector('.stage-wrap');
+  const availW = wrap.clientWidth - 48;
+  const availH = wrap.clientHeight - 48;
+  scale = Math.min(1, availW / layout.canvas.width, availH / layout.canvas.height);
+
+  canvas.style.width = layout.canvas.width * scale + 'px';
+  canvas.style.height = layout.canvas.height * scale + 'px';
+
+  positionEl('elP1Hero', layout.elements.p1Hero);
+  positionEl('elP2Hero', layout.elements.p2Hero);
+  positionEl('elP1', layout.elements.p1);
+  positionEl('elP2', layout.elements.p2);
+  positionEl('elTimer', layout.elements.timer);
+}
+
+function positionEl(elId, box) {
+  const el = document.getElementById(elId);
+  el.style.left = box.x * scale + 'px';
+  el.style.top = box.y * scale + 'px';
+  el.style.width = box.width * scale + 'px';
+  el.style.height = box.height * scale + 'px';
+  const isTimer = elId === 'elTimer';
+  const heightPx = box.height * scale;
+  if (isTimer) {
+    el.querySelector('.timer-digits').style.fontSize = Math.round(heightPx * 0.42) + 'px';
+    const dot = el.querySelector('.timer-dot');
+    dot.style.width = dot.style.height = Math.round(heightPx * 0.16) + 'px';
+  } else if (elId === 'elP1' || elId === 'elP2') {
+    el.querySelector('.badge-name').style.fontSize = Math.round(heightPx * 0.14) + 'px';
+    el.querySelector('.badge-life').style.fontSize = Math.round(heightPx * 0.55) + 'px';
+    el.querySelector('.life-bar-value').style.fontSize = Math.round(heightPx * 0.34) + 'px';
+  }
+}
+
+// ---- Drag & resize --------------------------------------------------
+const linkPlayerSizes = document.getElementById('linkPlayerSizes');
+const pairedElements = {
+  p1: 'p2',
+  p2: 'p1',
+  p1Hero: 'p2Hero',
+  p2Hero: 'p1Hero',
+};
+
+function pairedElementId(id) {
+  return linkPlayerSizes.checked ? pairedElements[id] : null;
+}
+
+function elementDomId(id) {
+  return 'el' + id[0].toUpperCase() + id.slice(1);
+}
+
+function sendLayoutBox(id, box) {
+  send({
+    type: 'layout:setElement',
+    id,
+    x: box.x,
+    y: box.y,
+    width: box.width,
+    height: box.height,
+    ...(id === 'p1' || id === 'p2' ? { displayMode: box.displayMode || 'numeric' } : {}),
+  });
+}
+
+document.querySelectorAll('.el').forEach((el) => {
+  const id = el.dataset.id;
+  const handle = el.querySelector('.handle');
+
+  el.addEventListener('pointerdown', (e) => {
+    if (e.target === handle) return;
+    e.preventDefault();
+    el.setPointerCapture(e.pointerId);
+    el.classList.add('dragging');
+    const box = state.layout.elements[id];
+    dragging = { id, mode: 'move', startX: e.clientX, startY: e.clientY, box: { ...box } };
+  });
+
+  handle.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handle.setPointerCapture(e.pointerId);
+    const box = state.layout.elements[id];
+    dragging = { id, mode: 'resize', startX: e.clientX, startY: e.clientY, box: { ...box } };
+  });
+});
+
+window.addEventListener('pointermove', (e) => {
+  if (!dragging || !state) return;
+  const dx = (e.clientX - dragging.startX) / scale;
+  const dy = (e.clientY - dragging.startY) / scale;
+  const canvasW = state.layout.canvas.width;
+  const canvasH = state.layout.canvas.height;
+  const el = document.getElementById(elementDomId(dragging.id));
+
+  let box;
+  if (dragging.mode === 'move') {
+    box = {
+      ...dragging.box,
+      x: Math.min(Math.max(0, dragging.box.x + dx), canvasW - dragging.box.width),
+      y: Math.min(Math.max(0, dragging.box.y + dy), canvasH - dragging.box.height),
+    };
+  } else {
+    box = {
+      ...dragging.box,
+      width: Math.min(Math.max(60, dragging.box.width + dx), canvasW - dragging.box.x),
+      height: Math.min(Math.max(40, dragging.box.height + dy), canvasH - dragging.box.y),
+    };
+  }
+
+  const pairId = dragging.mode === 'resize' ? pairedElementId(dragging.id) : null;
+  const pair = pairId ? state.layout.elements[pairId] : null;
+  if (pair) {
+    const matchedWidth = Math.min(box.width, canvasW - box.x, canvasW - pair.x);
+    const matchedHeight = Math.min(box.height, canvasH - box.y, canvasH - pair.y);
+    box.width = matchedWidth;
+    box.height = matchedHeight;
+    state.layout.elements[pairId] = { ...pair, width: matchedWidth, height: matchedHeight };
+    positionEl(elementDomId(pairId), state.layout.elements[pairId]);
+  }
+
+  state.layout.elements[dragging.id] = box;
+  positionEl(el.id, box);
+});
+
+window.addEventListener('pointerup', () => {
+  if (!dragging) return;
+  const box = state.layout.elements[dragging.id];
+  document.querySelectorAll('.el').forEach((e) => e.classList.remove('dragging'));
+  sendLayoutBox(dragging.id, box);
+  const pairId = dragging.mode === 'resize' ? pairedElementId(dragging.id) : null;
+  if (pairId) sendLayoutBox(pairId, state.layout.elements[pairId]);
+  dragging = null;
+});
+
+// ---- Resolution controls --------------------------------------------
+const presetSelect = document.getElementById('presetSelect');
+const customFields = document.getElementById('customFields');
+
+function syncPresetUI(canvas) {
+  if (document.activeElement === presetSelect || document.activeElement === document.getElementById('customW') || document.activeElement === document.getElementById('customH')) return;
+  const key = `${canvas.width}x${canvas.height}`;
+  const known = ['1920x1080', '2560x1440', '3840x2160', '1280x720'];
+  if (known.includes(key)) {
+    presetSelect.value = key;
+    customFields.style.display = 'none';
+  } else {
+    presetSelect.value = 'custom';
+    customFields.style.display = 'flex';
+    document.getElementById('customW').value = canvas.width;
+    document.getElementById('customH').value = canvas.height;
+  }
+}
+
+presetSelect.addEventListener('change', () => {
+  if (presetSelect.value === 'custom') {
+    customFields.style.display = 'flex';
+    document.getElementById('customW').value = state.layout.canvas.width;
+    document.getElementById('customH').value = state.layout.canvas.height;
+    return;
+  }
+  customFields.style.display = 'none';
+  const [w, h] = presetSelect.value.split('x').map(Number);
+  send({ type: 'layout:setCanvas', width: w, height: h });
+});
+
+document.getElementById('applyCustom').addEventListener('click', () => {
+  const w = Number(document.getElementById('customW').value);
+  const h = Number(document.getElementById('customH').value);
+  if (w >= 320 && h >= 180) send({ type: 'layout:setCanvas', width: w, height: h });
+});
+
+document.getElementById('resetLayoutBtn').addEventListener('click', () => {
+  if (confirm('Reset badge and timer positions to defaults?')) send({ type: 'layout:reset' });
+});
+
+[0, 1].forEach((i) => {
+  document.getElementById('displayMode' + i).addEventListener('change', (e) => {
+    if (!state) return;
+    const id = 'p' + (i + 1);
+    const box = { ...state.layout.elements[id], displayMode: e.target.value };
+    state.layout.elements[id] = box;
+    renderLifeDisplay(i, state.players[i], box);
+    sendLayoutBox(id, box);
+  });
+});
+
+window.addEventListener('resize', () => { if (state && !dragging) layoutCanvas(state.layout); });
+</script>
+</body>
+</html>

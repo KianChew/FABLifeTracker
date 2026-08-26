@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Life Tracker — Overlay</title>
+<style>
+  :root {
+    --ink: #F2F0E9;
+    --p1: #D64545;
+    --p2: #3B6FA0;
+    --brass: #E0B84B;
+    --void: #0D0D12;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: transparent;
+    width: 100%; height: 100%; overflow: hidden;
+    font-family: -apple-system, 'Segoe UI', Inter, sans-serif;
+  }
+  #viewport { width: 100vw; height: 100vh; position: relative; }
+  #canvas {
+    position: absolute; top: 0; left: 0;
+    transform-origin: top left;
+  }
+  .el { position: absolute; }
+
+  .badge {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: transparent;
+  }
+  .hero-art-module {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 12%/10%;
+    background: rgba(13,13,18,0.55);
+    backdrop-filter: blur(4px);
+  }
+  .hero-art {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(1.05) contrast(1.03);
+  }
+  .badge-name {
+    font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: rgba(242,240,233,0.65);
+  }
+  .badge-life {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-weight: 800; line-height: 1;
+    transition: transform 0.15s;
+  }
+  .life-bar {
+    position: relative;
+    width: 78%;
+    height: 34%;
+    min-height: 12px;
+    display: none;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px;
+    background: rgba(0,0,0,0.42);
+  }
+  .life-bar-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 100%;
+    transition: width 0.25s ease, background-color 0.25s ease;
+  }
+  .life-bar-value {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-weight: 800;
+    line-height: 1;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+  }
+  .badge.p1 .badge-life { color: var(--p1); text-shadow: 0 0 24px rgba(214,69,69,0.5); }
+  .badge.p2 .badge-life { color: var(--p2); text-shadow: 0 0 24px rgba(59,111,160,0.5); }
+  .badge-life.bump { transform: scale(1.15); }
+  .badge.p1 .life-bar-fill { background: var(--p1); }
+  .badge.p2 .life-bar-fill { background: var(--p2); }
+  .life-bar-fill.low { background: #C78B38 !important; }
+  .life-bar-fill.critical { background: #8B3030 !important; }
+
+  .timer-capsule {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: rgba(13,13,18,0.72);
+    border: 1px solid rgba(224,184,75,0.4);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+  }
+  .timer-dot {
+    border-radius: 50%;
+    background: var(--brass); opacity: 0.35; flex-shrink: 0;
+  }
+  .timer-dot.running { opacity: 1; box-shadow: 0 0 10px var(--brass); animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .timer-digits {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-weight: 700; color: var(--brass); letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+  <div id="viewport">
+    <div id="canvas">
+      <div class="el" id="elP1Hero"><div class="hero-art-module">
+        <img class="hero-art" id="art0" alt="" />
+      </div></div>
+      <div class="el" id="elP2Hero"><div class="hero-art-module">
+        <img class="hero-art" id="art1" alt="" />
+      </div></div>
+      <div class="el" id="elP1"><div class="badge p1">
+        <div class="badge-name" id="name0">Player 1</div>
+        <div class="badge-life" id="life0">20</div>
+        <div class="life-bar" id="lifeBar0">
+          <div class="life-bar-fill"></div>
+          <div class="life-bar-value">20</div>
+        </div>
+      </div></div>
+      <div class="el" id="elP2"><div class="badge p2">
+        <div class="badge-name" id="name1">Player 2</div>
+        <div class="badge-life" id="life1">20</div>
+        <div class="life-bar" id="lifeBar1">
+          <div class="life-bar-fill"></div>
+          <div class="life-bar-value">20</div>
+        </div>
+      </div></div>
+      <div class="el" id="elTimer"><div class="timer-capsule">
+        <div class="timer-dot" id="timerDot"></div>
+        <div class="timer-digits" id="timerDigits">30:00</div>
+      </div></div>
+    </div>
+  </div>
+
+<script>
+const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+let ws;
+let state = null;
+
+function fmt(ms) {
+  const totalSec = Math.max(0, Math.round(ms / 1000));
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function connect() {
+  ws = new WebSocket(`${proto}://${location.host}`);
+  ws.onmessage = (evt) => {
+    const msg = JSON.parse(evt.data);
+    if (msg.type === 'state') render(msg.state);
+  };
+  ws.onclose = () => setTimeout(connect, 1500);
+}
+connect();
+
+function applyLayout(layout) {
+  const canvas = document.getElementById('canvas');
+  canvas.style.width = layout.canvas.width + 'px';
+  canvas.style.height = layout.canvas.height + 'px';
+
+  const scale = Math.min(
+    window.innerWidth / layout.canvas.width,
+    window.innerHeight / layout.canvas.height
+  );
+  canvas.style.transform = `scale(${scale})`;
+
+  positionEl('elP1Hero', layout.elements.p1Hero);
+  positionEl('elP2Hero', layout.elements.p2Hero);
+  positionEl('elP1', layout.elements.p1);
+  positionEl('elP2', layout.elements.p2);
+  positionEl('elTimer', layout.elements.timer);
+}
+
+function heroForPlayer(s, player) {
+  if (!player.heroId) return null;
+  return s.heroes.find((hero) => hero.id === player.heroId) || null;
+}
+
+function maxLifeForPlayer(s, player) {
+  const hero = heroForPlayer(s, player);
+  if (!hero) return Math.max(1, s.startingLife || 20);
+  const life = s.lastFormat === 'sage' ? hero.sageLife : hero.ccLife;
+  return Math.max(1, life || s.startingLife || 20);
+}
+
+function setLifeDisplay(index, player, box) {
+  const mode = box?.displayMode === 'healthbar' ? 'healthbar' : 'numeric';
+  const lifeEl = document.getElementById('life' + index);
+  const bar = document.getElementById('lifeBar' + index);
+  const fill = bar.querySelector('.life-bar-fill');
+  const value = bar.querySelector('.life-bar-value');
+  const maxLife = maxLifeForPlayer(state, player);
+  const percent = Math.max(0, Math.min(100, (player.life / maxLife) * 100));
+
+  lifeEl.style.display = mode === 'numeric' ? 'block' : 'none';
+  bar.style.display = mode === 'healthbar' ? 'block' : 'none';
+  fill.style.width = percent + '%';
+  fill.classList.toggle('low', percent <= 50 && percent > 25);
+  fill.classList.toggle('critical', percent <= 25);
+  value.textContent = player.life;
+}
+
+function setHeroArt(index, hero) {
+  const image = document.getElementById('art' + index);
+  if (hero && hero.artPath) {
+    image.src = hero.artPath;
+    image.style.display = 'block';
+  } else {
+    image.removeAttribute('src');
+    image.style.display = 'none';
+  }
+}
+
+function positionEl(id, box) {
+  const el = document.getElementById(id);
+  el.style.left = box.x + 'px';
+  el.style.top = box.y + 'px';
+  el.style.width = box.width + 'px';
+  el.style.height = box.height + 'px';
+
+  // Scale type and decoration to the box height so resizing "just works".
+  if (id === 'elTimer') {
+    el.querySelector('.timer-digits').style.fontSize = Math.round(box.height * 0.42) + 'px';
+    const dot = el.querySelector('.timer-dot');
+    dot.style.width = dot.style.height = Math.round(box.height * 0.16) + 'px';
+  } else if (id === 'elP1' || id === 'elP2') {
+    el.querySelector('.badge-name').style.fontSize = Math.round(box.height * 0.14) + 'px';
+    el.querySelector('.badge-life').style.fontSize = Math.round(box.height * 0.55) + 'px';
+    el.querySelector('.life-bar-value').style.fontSize = Math.round(box.height * 0.34) + 'px';
+  }
+}
+
+let lastLayoutKey = '';
+function render(s) {
+  const prev = state;
+  state = s;
+
+  s.players.forEach((p, i) => {
+    document.getElementById('name' + i).textContent = p.name;
+    setHeroArt(i, heroForPlayer(s, p));
+    setLifeDisplay(i, p, s.layout.elements['p' + (i + 1)]);
+    const lifeEl = document.getElementById('life' + i);
+    if (prev && prev.players[i].life !== p.life) {
+      lifeEl.classList.add('bump');
+      setTimeout(() => lifeEl.classList.remove('bump'), 150);
+    }
+    lifeEl.textContent = p.life;
+  });
+
+  const t = s.timer;
+  const ms = t.mode === 'countdown' ? t.remainingMs : t.elapsedMs;
+  document.getElementById('timerDigits').textContent = fmt(ms);
+  document.getElementById('timerDot').classList.toggle('running', t.running);
+
+  const layoutKey = JSON.stringify(s.layout);
+  if (layoutKey !== lastLayoutKey) {
+    lastLayoutKey = layoutKey;
+    applyLayout(s.layout);
+  }
+}
+
+window.addEventListener('resize', () => { if (state) applyLayout(state.layout); });
+</script>
+</body>
+</html>

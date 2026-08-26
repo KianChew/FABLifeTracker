@@ -1,0 +1,17 @@
+{
+  "name": "life-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "sharp": "^0.35.3",
+    "ws": "^8.21.3"
+  }
+}

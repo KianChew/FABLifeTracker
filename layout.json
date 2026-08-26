@@ -1,0 +1,40 @@
+{
+  "canvas": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": {
+    "p1": {
+      "x": 0,
+      "y": 144,
+      "width": 828,
+      "height": 149,
+      "displayMode": "healthbar"
+    },
+    "p2": {
+      "x": 1092,
+      "y": 131,
+      "width": 828,
+      "height": 149,
+      "displayMode": "healthbar"
+    },
+    "p1Hero": {
+      "x": 0,
+      "y": 513,
+      "width": 370,
+      "height": 567
+    },
+    "p2Hero": {
+      "x": 1550,
+      "y": 513,
+      "width": 370,
+      "height": 567
+    },
+    "timer": {
+      "x": 820,
+      "y": 0,
+      "width": 421,
+      "height": 98
+    }
+  }
+}

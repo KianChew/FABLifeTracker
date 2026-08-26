@@ -1,0 +1,1186 @@
+[
+  {
+    "id": "h_msybgsdoorf03",
+    "name": "Cindra, Dracai of Retribution",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msybgsdoorf03.webp",
+    "artPath": "/hero-art/h_msybgsdoorf03.webp"
+  },
+  {
+    "id": "h_msybh6x03f1bt",
+    "name": "Fang, Dracai of Blades",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msybh6x03f1bt.webp",
+    "artPath": "/hero-art/h_msybh6x03f1bt.webp"
+  },
+  {
+    "id": "h_msyeen0g8pkie",
+    "name": "Arakni",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g8pkie.webp",
+    "artPath": "/hero-art/h_msyeen0g8pkie.webp"
+  },
+  {
+    "id": "h_msyeen0g7niuv",
+    "name": "Arakni, 5L!p3d 7hRu 7h3 cR4X",
+    "ccLife": 38,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g7niuv.webp",
+    "artPath": "/hero-art/h_msyeen0g7niuv.webp"
+  },
+  {
+    "id": "h_msyeen0gldobd",
+    "name": "Arakni Huntsman",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gldobd.webp",
+    "artPath": "/hero-art/h_msyeen0gldobd.webp"
+  },
+  {
+    "id": "h_msyeen0gku9mq",
+    "name": "Arakni, Marionette",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gku9mq.webp",
+    "artPath": "/hero-art/h_msyeen0gku9mq.webp"
+  },
+  {
+    "id": "h_msyeen0gjxdpb",
+    "name": "Arakni, Solitary Confinement",
+    "ccLife": null,
+    "sageLife": 19,
+    "imagePath": "/hero-images/h_msyeen0gjxdpb.webp",
+    "artPath": "/hero-art/h_msyeen0gjxdpb.webp"
+  },
+  {
+    "id": "h_msyeen0gf2f7d",
+    "name": "Arakni, Web of Deceit",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gf2f7d.webp",
+    "artPath": "/hero-art/h_msyeen0gf2f7d.webp"
+  },
+  {
+    "id": "h_msyeen0g8upqu",
+    "name": "Aurora",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g8upqu.webp",
+    "artPath": "/hero-art/h_msyeen0g8upqu.webp"
+  },
+  {
+    "id": "h_msyeen0gyox3p",
+    "name": "Aurora, Emissary of Lightning",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gyox3p.webp",
+    "artPath": "/hero-art/h_msyeen0gyox3p.webp"
+  },
+  {
+    "id": "h_msyeen0gm61v7",
+    "name": "Aurora, Legacy of Tempest",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gm61v7.webp",
+    "artPath": "/hero-art/h_msyeen0gm61v7.webp"
+  },
+  {
+    "id": "h_msyeen0gqdzns",
+    "name": "Aurora, Shooting Star",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gqdzns.webp",
+    "artPath": "/hero-art/h_msyeen0gqdzns.webp"
+  },
+  {
+    "id": "h_msyeen0gct8lw",
+    "name": "Azalea",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gct8lw.webp",
+    "artPath": "/hero-art/h_msyeen0gct8lw.webp"
+  },
+  {
+    "id": "h_msyeen0grd79b",
+    "name": "Azalea, Ace in the Hole",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0grd79b.webp",
+    "artPath": "/hero-art/h_msyeen0grd79b.webp"
+  },
+  {
+    "id": "h_msyeen0gwelc5",
+    "name": "Benji, the Piercing Wind",
+    "ccLife": null,
+    "sageLife": 17,
+    "imagePath": "/hero-images/h_msyeen0gwelc5.webp",
+    "artPath": "/hero-art/h_msyeen0gwelc5.webp"
+  },
+  {
+    "id": "h_msyeen0g4h2wp",
+    "name": "Betsy",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g4h2wp.webp",
+    "artPath": "/hero-art/h_msyeen0g4h2wp.webp"
+  },
+  {
+    "id": "h_msyeen0gcdz3m",
+    "name": "Betsy, Skin in the Game",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gcdz3m.webp",
+    "artPath": "/hero-art/h_msyeen0gcdz3m.webp"
+  },
+  {
+    "id": "h_msyeen0g9l7al",
+    "name": "Blaze, Firemind",
+    "ccLife": null,
+    "sageLife": 17,
+    "imagePath": "/hero-images/h_msyeen0g9l7al.webp",
+    "artPath": "/hero-art/h_msyeen0g9l7al.webp"
+  },
+  {
+    "id": "h_msyeen0gmq1up",
+    "name": "Bolfar, Bear Hands",
+    "ccLife": 20,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gmq1up.webp",
+    "artPath": "/hero-art/h_msyeen0gmq1up.webp"
+  },
+  {
+    "id": "h_msyeen0gwers3",
+    "name": "Bravo",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gwers3.webp",
+    "artPath": "/hero-art/h_msyeen0gwers3.webp"
+  },
+  {
+    "id": "h_msyeen0go3n0u",
+    "name": "Bravo, Flattering Showman",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0go3n0u.webp",
+    "artPath": "/hero-art/h_msyeen0go3n0u.webp"
+  },
+  {
+    "id": "h_msyeen0gx7us5",
+    "name": "Bravo, Showstopper",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gx7us5.webp",
+    "artPath": "/hero-art/h_msyeen0gx7us5.webp"
+  },
+  {
+    "id": "h_msyeen0g4l6zy",
+    "name": "Bravo, Star of the Show",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g4l6zy.webp",
+    "artPath": "/hero-art/h_msyeen0g4l6zy.webp"
+  },
+  {
+    "id": "h_msyeen0gjmh9q",
+    "name": "Brevant, Civic Protector",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gjmh9q.webp",
+    "artPath": "/hero-art/h_msyeen0gjmh9q.webp"
+  },
+  {
+    "id": "h_msyeen0gkndpn",
+    "name": "Briar",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gkndpn.webp",
+    "artPath": "/hero-art/h_msyeen0gkndpn.webp"
+  },
+  {
+    "id": "h_msyeen0gnt5mg",
+    "name": "Briar, Warden of Thorns",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gnt5mg.webp",
+    "artPath": "/hero-art/h_msyeen0gnt5mg.webp"
+  },
+  {
+    "id": "h_msyeen0g7f54p",
+    "name": "Brutus, Summa Rudis",
+    "ccLife": 20,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g7f54p.webp",
+    "artPath": "/hero-art/h_msyeen0g7f54p.webp"
+  },
+  {
+    "id": "h_msyeen0gx88fn",
+    "name": "Chane, Bound by Shadow",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gx88fn.webp",
+    "artPath": "/hero-art/h_msyeen0gx88fn.webp"
+  },
+  {
+    "id": "h_msyeen0gl9mq7",
+    "name": "Cindra",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gl9mq7.webp",
+    "artPath": "/hero-art/h_msyeen0gl9mq7.webp"
+  },
+  {
+    "id": "h_msyeen0gl16sz",
+    "name": "Dash",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gl16sz.webp",
+    "artPath": "/hero-art/h_msyeen0gl16sz.webp"
+  },
+  {
+    "id": "h_msyeen0ghi2mw",
+    "name": "Dash, Database",
+    "ccLife": null,
+    "sageLife": 18,
+    "imagePath": "/hero-images/h_msyeen0ghi2mw.webp",
+    "artPath": "/hero-art/h_msyeen0ghi2mw.webp"
+  },
+  {
+    "id": "h_msyeen0gg5dvc",
+    "name": "Dash, Inventor Extraordinaire",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gg5dvc.webp",
+    "artPath": "/hero-art/h_msyeen0gg5dvc.webp"
+  },
+  {
+    "id": "h_msyeen0geob1b",
+    "name": "Dash I/O",
+    "ccLife": 36,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0geob1b.webp",
+    "artPath": "/hero-art/h_msyeen0geob1b.webp"
+  },
+  {
+    "id": "h_msyeen0gaz39d",
+    "name": "Data Doll MKII",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gaz39d.webp",
+    "artPath": "/hero-art/h_msyeen0gaz39d.webp"
+  },
+  {
+    "id": "h_msyeen0g7fhuf",
+    "name": "Dorinthea",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g7fhuf.webp",
+    "artPath": "/hero-art/h_msyeen0g7fhuf.webp"
+  },
+  {
+    "id": "h_msyeen0gyhufy",
+    "name": "Dorinthea Ironsong",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gyhufy.webp",
+    "artPath": "/hero-art/h_msyeen0gyhufy.webp"
+  },
+  {
+    "id": "h_msyeen0gsiowc",
+    "name": "Dorinthea, Quicksilver Prodigy",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gsiowc.webp",
+    "artPath": "/hero-art/h_msyeen0gsiowc.webp"
+  },
+  {
+    "id": "h_msyeen0gxx250",
+    "name": "Dr. Mortimer",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gxx250.webp",
+    "artPath": "/hero-art/h_msyeen0gxx250.webp"
+  },
+  {
+    "id": "h_msyeen0gu758p",
+    "name": "Dr. Mortimer, Blight of the Pits",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gu758p.webp",
+    "artPath": "/hero-art/h_msyeen0gu758p.webp"
+  },
+  {
+    "id": "h_msyeen0gqr8zx",
+    "name": "Dromai",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gqr8zx.webp",
+    "artPath": "/hero-art/h_msyeen0gqr8zx.webp"
+  },
+  {
+    "id": "h_msyeen0god77d",
+    "name": "Dromai, Ash Artist",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0god77d.webp",
+    "artPath": "/hero-art/h_msyeen0god77d.webp"
+  },
+  {
+    "id": "h_msyeen0gpbrva",
+    "name": "Emperor, Dracai of Aesir",
+    "ccLife": null,
+    "sageLife": 15,
+    "imagePath": "/hero-images/h_msyeen0gpbrva.webp",
+    "artPath": "/hero-art/h_msyeen0gpbrva.webp"
+  },
+  {
+    "id": "h_msyeen0gct2rm",
+    "name": "Enigma",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gct2rm.webp",
+    "artPath": "/hero-art/h_msyeen0gct2rm.webp"
+  },
+  {
+    "id": "h_msyeen0gm40k1",
+    "name": "Enigma, Ledger of Ancestry",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gm40k1.webp",
+    "artPath": "/hero-art/h_msyeen0gm40k1.webp"
+  },
+  {
+    "id": "h_msyeen0g3f7fv",
+    "name": "Enigma, New Moon",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g3f7fv.webp",
+    "artPath": "/hero-art/h_msyeen0g3f7fv.webp"
+  },
+  {
+    "id": "h_msyeen0gzwpyi",
+    "name": "Fai",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gzwpyi.webp",
+    "artPath": "/hero-art/h_msyeen0gzwpyi.webp"
+  },
+  {
+    "id": "h_msyeen0g95je8",
+    "name": "Fai, Rising Rebellion",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g95je8.webp",
+    "artPath": "/hero-art/h_msyeen0g95je8.webp"
+  },
+  {
+    "id": "h_msyeen0gujorq",
+    "name": "Fang",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gujorq.webp",
+    "artPath": "/hero-art/h_msyeen0gujorq.webp"
+  },
+  {
+    "id": "h_msyeen0gidd3y",
+    "name": "Fightmaster Kox",
+    "ccLife": 19,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gidd3y.webp",
+    "artPath": "/hero-art/h_msyeen0gidd3y.webp"
+  },
+  {
+    "id": "h_msyeen0g4zi42",
+    "name": "Florian",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g4zi42.webp",
+    "artPath": "/hero-art/h_msyeen0g4zi42.webp"
+  },
+  {
+    "id": "h_msyeen0gxknns",
+    "name": "Florian, Rotwood Harbinger",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gxknns.webp",
+    "artPath": "/hero-art/h_msyeen0gxknns.webp"
+  },
+  {
+    "id": "h_msyeen0g54l4s",
+    "name": "Frankie, Make Ends Meat",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g54l4s.webp",
+    "artPath": "/hero-art/h_msyeen0g54l4s.webp"
+  },
+  {
+    "id": "h_msyeen0gx7kl8",
+    "name": "Genis Wotchuneed",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gx7kl8.webp",
+    "artPath": "/hero-art/h_msyeen0gx7kl8.webp"
+  },
+  {
+    "id": "h_msyeen0grt4h6",
+    "name": "Gravy Bones",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0grt4h6.webp",
+    "artPath": "/hero-art/h_msyeen0grt4h6.webp"
+  },
+  {
+    "id": "h_msyeen0guntsa",
+    "name": "Gravy Bones, Shipwrecked Looter",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0guntsa.webp",
+    "artPath": "/hero-art/h_msyeen0guntsa.webp"
+  },
+  {
+    "id": "h_msyeen0g56jkb",
+    "name": "Groundbreaker Crix",
+    "ccLife": 20,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g56jkb.webp",
+    "artPath": "/hero-art/h_msyeen0g56jkb.webp"
+  },
+  {
+    "id": "h_msyeen0gyy77y",
+    "name": "Hala",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gyy77y.webp",
+    "artPath": "/hero-art/h_msyeen0gyy77y.webp"
+  },
+  {
+    "id": "h_msyeen0g6u9bc",
+    "name": "Hala, Bladesaint of the Vow",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g6u9bc.webp",
+    "artPath": "/hero-art/h_msyeen0g6u9bc.webp"
+  },
+  {
+    "id": "h_msyeen0gzd1m3",
+    "name": "Ira, Crimson Haze",
+    "ccLife": 20,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gzd1m3.webp",
+    "artPath": "/hero-art/h_msyeen0gzd1m3.webp"
+  },
+  {
+    "id": "h_msyeen0gqq91n",
+    "name": "Ira, Scarlet Revenger",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gqq91n.webp",
+    "artPath": "/hero-art/h_msyeen0gqq91n.webp"
+  },
+  {
+    "id": "h_msyeen0gmrwy2",
+    "name": "Iyslander",
+    "ccLife": null,
+    "sageLife": 18,
+    "imagePath": "/hero-images/h_msyeen0gmrwy2.webp",
+    "artPath": "/hero-art/h_msyeen0gmrwy2.webp"
+  },
+  {
+    "id": "h_msyeen0gt853b",
+    "name": "Iyslander, Stormbind",
+    "ccLife": 36,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gt853b.webp",
+    "artPath": "/hero-art/h_msyeen0gt853b.webp"
+  },
+  {
+    "id": "h_msyeen0glue6v",
+    "name": "Jarl Vetreiði",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0glue6v.webp",
+    "artPath": "/hero-art/h_msyeen0glue6v.webp"
+  },
+  {
+    "id": "h_msyeen0grovya",
+    "name": "Kano",
+    "ccLife": null,
+    "sageLife": 15,
+    "imagePath": "/hero-images/h_msyeen0grovya.webp",
+    "artPath": "/hero-art/h_msyeen0grovya.webp"
+  },
+  {
+    "id": "h_msyeen0gizwhu",
+    "name": "Kano, Dracai of Aether",
+    "ccLife": 30,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gizwhu.webp",
+    "artPath": "/hero-art/h_msyeen0gizwhu.webp"
+  },
+  {
+    "id": "h_msyeen0gntlmk",
+    "name": "Kassai",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gntlmk.webp",
+    "artPath": "/hero-art/h_msyeen0gntlmk.webp"
+  },
+  {
+    "id": "h_msyeen0gkdpqm",
+    "name": "Kassai, Cintari Sellsword",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gkdpqm.webp",
+    "artPath": "/hero-art/h_msyeen0gkdpqm.webp"
+  },
+  {
+    "id": "h_msyeen0gmzqp1",
+    "name": "Kassai of the Golden Sand",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gmzqp1.webp",
+    "artPath": "/hero-art/h_msyeen0gmzqp1.webp"
+  },
+  {
+    "id": "h_msyeen0gr9akk",
+    "name": "Katsu",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gr9akk.webp",
+    "artPath": "/hero-art/h_msyeen0gr9akk.webp"
+  },
+  {
+    "id": "h_msyeen0gvmxea",
+    "name": "Katsu, the Wanderer",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gvmxea.webp",
+    "artPath": "/hero-art/h_msyeen0gvmxea.webp"
+  },
+  {
+    "id": "h_msyeen0gay6n9",
+    "name": "Kavdaen, Trader of Skins",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gay6n9.webp",
+    "artPath": "/hero-art/h_msyeen0gay6n9.webp"
+  },
+  {
+    "id": "h_msyeen0g3wr2v",
+    "name": "Kayo",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g3wr2v.webp",
+    "artPath": "/hero-art/h_msyeen0g3wr2v.webp"
+  },
+  {
+    "id": "h_msyeen0gqmj23",
+    "name": "Kayo, Armed and Dangerous",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gqmj23.webp",
+    "artPath": "/hero-art/h_msyeen0gqmj23.webp"
+  },
+  {
+    "id": "h_msyeen0gs8y3z",
+    "name": "Kayo, Berserker Runt",
+    "ccLife": null,
+    "sageLife": 19,
+    "imagePath": "/hero-images/h_msyeen0gs8y3z.webp",
+    "artPath": "/hero-art/h_msyeen0gs8y3z.webp"
+  },
+  {
+    "id": "h_msyeen0gpkjox",
+    "name": "Kayo, Strong-arm",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gpkjox.webp",
+    "artPath": "/hero-art/h_msyeen0gpkjox.webp"
+  },
+  {
+    "id": "h_msyeen0ge4vin",
+    "name": "Kayo, Underhanded Cheat",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0ge4vin.webp",
+    "artPath": "/hero-art/h_msyeen0ge4vin.webp"
+  },
+  {
+    "id": "h_msyeen0gpoe9a",
+    "name": "Killjoy, the Crooked Blade",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gpoe9a.webp",
+    "artPath": "/hero-art/h_msyeen0gpoe9a.webp"
+  },
+  {
+    "id": "h_msyeen0glbd94",
+    "name": "Levia, Shadowborn Abomination",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0glbd94.webp",
+    "artPath": "/hero-art/h_msyeen0glbd94.webp"
+  },
+  {
+    "id": "h_msyeen0gtvet5",
+    "name": "Lexi",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gtvet5.webp",
+    "artPath": "/hero-art/h_msyeen0gtvet5.webp"
+  },
+  {
+    "id": "h_msyeen0gjafcf",
+    "name": "Lexi, Livewire",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gjafcf.webp",
+    "artPath": "/hero-art/h_msyeen0gjafcf.webp"
+  },
+  {
+    "id": "h_msyeen0g5xnle",
+    "name": "Lyath Goldmane",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g5xnle.webp",
+    "artPath": "/hero-art/h_msyeen0g5xnle.webp"
+  },
+  {
+    "id": "h_msyeen0g50beh",
+    "name": "Lyath Goldmane, Vile Savant",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g50beh.webp",
+    "artPath": "/hero-art/h_msyeen0g50beh.webp"
+  },
+  {
+    "id": "h_msyeen0gyiqjx",
+    "name": "Malice",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gyiqjx.webp",
+    "artPath": "/hero-art/h_msyeen0gyiqjx.webp"
+  },
+  {
+    "id": "h_msyeen0ggvkdm",
+    "name": "Malice, Domina of the Dead",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0ggvkdm.webp",
+    "artPath": "/hero-art/h_msyeen0ggvkdm.webp"
+  },
+  {
+    "id": "h_msyeen0g8oxud",
+    "name": "Marlynn",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g8oxud.webp",
+    "artPath": "/hero-art/h_msyeen0g8oxud.webp"
+  },
+  {
+    "id": "h_msyeen0g85euz",
+    "name": "Marlynn, Treasure Hunter",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g85euz.webp",
+    "artPath": "/hero-art/h_msyeen0g85euz.webp"
+  },
+  {
+    "id": "h_msyeen0gldsh5",
+    "name": "Maxx Nitro",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gldsh5.webp",
+    "artPath": "/hero-art/h_msyeen0gldsh5.webp"
+  },
+  {
+    "id": "h_msyeen0geto7n",
+    "name": "Maxx 'The Hype' Nitro",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0geto7n.webp",
+    "artPath": "/hero-art/h_msyeen0geto7n.webp"
+  },
+  {
+    "id": "h_msyeen0gxy8cd",
+    "name": "Melody, Sing-along",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gxy8cd.webp",
+    "artPath": "/hero-art/h_msyeen0gxy8cd.webp"
+  },
+  {
+    "id": "h_msyeen0gy6ldv",
+    "name": "Nuu",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gy6ldv.webp",
+    "artPath": "/hero-art/h_msyeen0gy6ldv.webp"
+  },
+  {
+    "id": "h_msyeen0ggh01p",
+    "name": "Nuu, Alluring Desire",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0ggh01p.webp",
+    "artPath": "/hero-art/h_msyeen0ggh01p.webp"
+  },
+  {
+    "id": "h_msyeen0goch0z",
+    "name": "Oldhim",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0goch0z.webp",
+    "artPath": "/hero-art/h_msyeen0goch0z.webp"
+  },
+  {
+    "id": "h_msyeen0glw0vx",
+    "name": "Oldhim, Grandfather of Eternity",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0glw0vx.webp",
+    "artPath": "/hero-art/h_msyeen0glw0vx.webp"
+  },
+  {
+    "id": "h_msyeen0g6rgb2",
+    "name": "Olympia",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g6rgb2.webp",
+    "artPath": "/hero-art/h_msyeen0g6rgb2.webp"
+  },
+  {
+    "id": "h_msyeen0ggwmr0",
+    "name": "Olympia, Prized Fighter",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0ggwmr0.webp",
+    "artPath": "/hero-art/h_msyeen0ggwmr0.webp"
+  },
+  {
+    "id": "h_msyeen0glv5uz",
+    "name": "Oscilio",
+    "ccLife": null,
+    "sageLife": 18,
+    "imagePath": "/hero-images/h_msyeen0glv5uz.webp",
+    "artPath": "/hero-art/h_msyeen0glv5uz.webp"
+  },
+  {
+    "id": "h_msyeen0gb3ev6",
+    "name": "Oscilio, Constella Intelligence",
+    "ccLife": 36,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gb3ev6.webp",
+    "artPath": "/hero-art/h_msyeen0gb3ev6.webp"
+  },
+  {
+    "id": "h_msyeen0ggftcl",
+    "name": "Oscilio, Forked Continuum",
+    "ccLife": 38,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0ggftcl.webp",
+    "artPath": "/hero-art/h_msyeen0ggftcl.webp"
+  },
+  {
+    "id": "h_msyeen0gh00du",
+    "name": "Oscilio, Scion of the Third Age",
+    "ccLife": null,
+    "sageLife": 19,
+    "imagePath": "/hero-images/h_msyeen0gh00du.webp",
+    "artPath": "/hero-art/h_msyeen0gh00du.webp"
+  },
+  {
+    "id": "h_msyeen0g2zxrs",
+    "name": "Pleiades",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g2zxrs.webp",
+    "artPath": "/hero-art/h_msyeen0g2zxrs.webp"
+  },
+  {
+    "id": "h_msyeen0g1dk3p",
+    "name": "Pleiades, Superstar",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g1dk3p.webp",
+    "artPath": "/hero-art/h_msyeen0g1dk3p.webp"
+  },
+  {
+    "id": "h_msyeen0geo1vr",
+    "name": "Prism, Advent of Thrones",
+    "ccLife": null,
+    "sageLife": 16,
+    "imagePath": "/hero-images/h_msyeen0geo1vr.webp",
+    "artPath": "/hero-art/h_msyeen0geo1vr.webp"
+  },
+  {
+    "id": "h_msyeen0gmkuap",
+    "name": "Prism, Awakener of Sol",
+    "ccLife": 32,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gmkuap.webp",
+    "artPath": "/hero-art/h_msyeen0gmkuap.webp"
+  },
+  {
+    "id": "h_msyeen0gqdkgp",
+    "name": "Prism, Sculptor of Arc Light",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gqdkgp.webp",
+    "artPath": "/hero-art/h_msyeen0gqdkgp.webp"
+  },
+  {
+    "id": "h_msyeen0ge17sl",
+    "name": "Professor Teklovossen",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0ge17sl.webp",
+    "artPath": "/hero-art/h_msyeen0ge17sl.webp"
+  },
+  {
+    "id": "h_msyeen0gnerkz",
+    "name": "Puffin",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gnerkz.webp",
+    "artPath": "/hero-art/h_msyeen0gnerkz.webp"
+  },
+  {
+    "id": "h_msyeen0gv2rey",
+    "name": "Puffin, Hightail",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gv2rey.webp",
+    "artPath": "/hero-art/h_msyeen0gv2rey.webp"
+  },
+  {
+    "id": "h_msyeen0g1n0ur",
+    "name": "Reya, the Unyielding",
+    "ccLife": 21,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g1n0ur.webp",
+    "artPath": "/hero-art/h_msyeen0g1n0ur.webp"
+  },
+  {
+    "id": "h_msyeen0gxuann",
+    "name": "Rhinar",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gxuann.webp",
+    "artPath": "/hero-art/h_msyeen0gxuann.webp"
+  },
+  {
+    "id": "h_msyeen0gcav2a",
+    "name": "Rhinar, Reckless Rampage",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gcav2a.webp",
+    "artPath": "/hero-art/h_msyeen0gcav2a.webp"
+  },
+  {
+    "id": "h_msyeen0gnhpu0",
+    "name": "Riptide",
+    "ccLife": null,
+    "sageLife": 19,
+    "imagePath": "/hero-images/h_msyeen0gnhpu0.webp",
+    "artPath": "/hero-art/h_msyeen0gnhpu0.webp"
+  },
+  {
+    "id": "h_msyeen0gz6pis",
+    "name": "Riptide, Lurker of the Deep",
+    "ccLife": 38,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gz6pis.webp",
+    "artPath": "/hero-art/h_msyeen0gz6pis.webp"
+  },
+  {
+    "id": "h_msyeen0g5h4bt",
+    "name": "Ruu'di, Gem Keeper",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g5h4bt.webp",
+    "artPath": "/hero-art/h_msyeen0g5h4bt.webp"
+  },
+  {
+    "id": "h_msyeen0glj9r3",
+    "name": "Scurv, Stowaway",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0glj9r3.webp",
+    "artPath": "/hero-art/h_msyeen0glj9r3.webp"
+  },
+  {
+    "id": "h_msyeen0gwyfp4",
+    "name": "Ser Boltyn, Breaker of Dawn",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gwyfp4.webp",
+    "artPath": "/hero-art/h_msyeen0gwyfp4.webp"
+  },
+  {
+    "id": "h_msyeen0gnw5n3",
+    "name": "Shiyana, Diamond Gemini",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gnw5n3.webp",
+    "artPath": "/hero-art/h_msyeen0gnw5n3.webp"
+  },
+  {
+    "id": "h_msyeen0g42mwm",
+    "name": "Squizzy & Floof",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g42mwm.webp",
+    "artPath": "/hero-art/h_msyeen0g42mwm.webp"
+  },
+  {
+    "id": "h_msyeen0gcxti3",
+    "name": "Taipanis, Dracai of Judgement",
+    "ccLife": 20,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gcxti3.webp",
+    "artPath": "/hero-art/h_msyeen0gcxti3.webp"
+  },
+  {
+    "id": "h_msyeen0gr7176",
+    "name": "Taylor",
+    "ccLife": null,
+    "sageLife": 18,
+    "imagePath": "/hero-images/h_msyeen0gr7176.webp",
+    "artPath": "/hero-art/h_msyeen0gr7176.webp"
+  },
+  {
+    "id": "h_msyeen0g50hnr",
+    "name": "Teklovossen",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g50hnr.webp",
+    "artPath": "/hero-art/h_msyeen0g50hnr.webp"
+  },
+  {
+    "id": "h_msyeen0g1sl4l",
+    "name": "Teklovossen, Esteemed Magnate",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g1sl4l.webp",
+    "artPath": "/hero-art/h_msyeen0g1sl4l.webp"
+  },
+  {
+    "id": "h_msyeen0g28vu9",
+    "name": "Terra",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g28vu9.webp",
+    "artPath": "/hero-art/h_msyeen0g28vu9.webp"
+  },
+  {
+    "id": "h_msyeen0g2hptc",
+    "name": "The Librarian, Magister of History",
+    "ccLife": 20,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g2hptc.webp",
+    "artPath": "/hero-art/h_msyeen0g2hptc.webp"
+  },
+  {
+    "id": "h_msyeen0grgobj",
+    "name": "Theryon, Magister of Justice",
+    "ccLife": 20,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0grgobj.webp",
+    "artPath": "/hero-art/h_msyeen0grgobj.webp"
+  },
+  {
+    "id": "h_msyeen0gxfiq9",
+    "name": "Tuffnut",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gxfiq9.webp",
+    "artPath": "/hero-art/h_msyeen0gxfiq9.webp"
+  },
+  {
+    "id": "h_msyeen0gcwth4",
+    "name": "Tuffnut, Bumbling Hulkster",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gcwth4.webp",
+    "artPath": "/hero-art/h_msyeen0gcwth4.webp"
+  },
+  {
+    "id": "h_msyeen0gh568a",
+    "name": "Uzuri",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gh568a.webp",
+    "artPath": "/hero-art/h_msyeen0gh568a.webp"
+  },
+  {
+    "id": "h_msyeen0glgk4t",
+    "name": "Uzuri, Switchblade",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0glgk4t.webp",
+    "artPath": "/hero-art/h_msyeen0glgk4t.webp"
+  },
+  {
+    "id": "h_msyeen0gsk58p",
+    "name": "Valda Brightaxe",
+    "ccLife": null,
+    "sageLife": 21,
+    "imagePath": "/hero-images/h_msyeen0gsk58p.webp",
+    "artPath": "/hero-art/h_msyeen0gsk58p.webp"
+  },
+  {
+    "id": "h_msyeen0gqyf22",
+    "name": "Valda, Seismic Impact",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gqyf22.webp",
+    "artPath": "/hero-art/h_msyeen0gqyf22.webp"
+  },
+  {
+    "id": "h_msyeen0gedjnw",
+    "name": "Verdance",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gedjnw.webp",
+    "artPath": "/hero-art/h_msyeen0gedjnw.webp"
+  },
+  {
+    "id": "h_msyeen0gmi39w",
+    "name": "Verdance, Thorn of the Rose",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gmi39w.webp",
+    "artPath": "/hero-art/h_msyeen0gmi39w.webp"
+  },
+  {
+    "id": "h_msyeen0g045ou",
+    "name": "Victor Goldmane",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g045ou.webp",
+    "artPath": "/hero-art/h_msyeen0g045ou.webp"
+  },
+  {
+    "id": "h_msyeen0gpzkgk",
+    "name": "Victor Goldmane, High and Mighty",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gpzkgk.webp",
+    "artPath": "/hero-art/h_msyeen0gpzkgk.webp"
+  },
+  {
+    "id": "h_msyeen0g1lohn",
+    "name": "Victor Goldmane, Match Fixer",
+    "ccLife": 20,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g1lohn.webp",
+    "artPath": "/hero-art/h_msyeen0g1lohn.webp"
+  },
+  {
+    "id": "h_msyeen0gymy4y",
+    "name": "Viserai",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gymy4y.webp",
+    "artPath": "/hero-art/h_msyeen0gymy4y.webp"
+  },
+  {
+    "id": "h_msyeen0geuar4",
+    "name": "Viserai, Between Worlds",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0geuar4.webp",
+    "artPath": "/hero-art/h_msyeen0geuar4.webp"
+  },
+  {
+    "id": "h_msyeen0g3c5y5",
+    "name": "Viserai, Rune Blood",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g3c5y5.webp",
+    "artPath": "/hero-art/h_msyeen0g3c5y5.webp"
+  },
+  {
+    "id": "h_msyeen0gjfogb",
+    "name": "Viserai, the Forsaken",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gjfogb.webp",
+    "artPath": "/hero-art/h_msyeen0gjfogb.webp"
+  },
+  {
+    "id": "h_msyeen0gh407m",
+    "name": "Vynnset",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gh407m.webp",
+    "artPath": "/hero-art/h_msyeen0gh407m.webp"
+  },
+  {
+    "id": "h_msyeen0g1spnz",
+    "name": "Vynnset, Iron Maiden",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g1spnz.webp",
+    "artPath": "/hero-art/h_msyeen0g1spnz.webp"
+  },
+  {
+    "id": "h_msyeen0gcv5wu",
+    "name": "Yoji, Royal Protector",
+    "ccLife": null,
+    "sageLife": 22,
+    "imagePath": "/hero-images/h_msyeen0gcv5wu.webp",
+    "artPath": "/hero-art/h_msyeen0gcv5wu.webp"
+  },
+  {
+    "id": "h_msyeen0g6r0cp",
+    "name": "Yorick, Weaver of Tales",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g6r0cp.webp",
+    "artPath": "/hero-art/h_msyeen0g6r0cp.webp"
+  },
+  {
+    "id": "h_msyeen0g33y5j",
+    "name": "Zane, Broadly Beloved",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0g33y5j.webp",
+    "artPath": "/hero-art/h_msyeen0g33y5j.webp"
+  },
+  {
+    "id": "h_msyeen0gz00h6",
+    "name": "Zen",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gz00h6.webp",
+    "artPath": "/hero-art/h_msyeen0gz00h6.webp"
+  },
+  {
+    "id": "h_msyeen0gfjdbj",
+    "name": "Zen, Tamer of Purpose",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0gfjdbj.webp",
+    "artPath": "/hero-art/h_msyeen0gfjdbj.webp"
+  },
+  {
+    "id": "h_msyeen0gcly1w",
+    "name": "Zyggy",
+    "ccLife": null,
+    "sageLife": 20,
+    "imagePath": "/hero-images/h_msyeen0gcly1w.webp",
+    "artPath": "/hero-art/h_msyeen0gcly1w.webp"
+  },
+  {
+    "id": "h_msyeen0g7gu2y",
+    "name": "Zyggy Starlight",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_msyeen0g7gu2y.webp",
+    "artPath": "/hero-art/h_msyeen0g7gu2y.webp"
+  }
+]
