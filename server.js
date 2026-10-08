@@ -42,7 +42,21 @@ function defaultLayout(width = 1920, height = 1080) {
       timer: {
         x: Math.round(width * 0.5 - width * 0.09), y: Math.round(height * 0.03),
         width: Math.round(width * 0.18), height: Math.round(height * 0.065),
+        background: true,
       },
+      p1Life: { x: Math.round(width * 0.02), y: Math.round(height * 0.08), width: Math.round(width * 0.14), height: Math.round(height * 0.08) },
+      p2Life: { x: Math.round(width * 0.84), y: Math.round(height * 0.08), width: Math.round(width * 0.14), height: Math.round(height * 0.08) },
+      p1Name: { x: Math.round(width * 0.02), y: Math.round(height * 0.52), width: Math.round(width * 0.14), height: Math.round(height * 0.045) },
+      p2Name: { x: Math.round(width * 0.84), y: Math.round(height * 0.52), width: Math.round(width * 0.14), height: Math.round(height * 0.045) },
+      p1HeroName: { x: Math.round(width * 0.02), y: Math.round(height * 0.57), width: Math.round(width * 0.14), height: Math.round(height * 0.04) },
+      p2HeroName: { x: Math.round(width * 0.84), y: Math.round(height * 0.57), width: Math.round(width * 0.14), height: Math.round(height * 0.04) },
+      p1Score: { x: Math.round(width * 0.02), y: Math.round(height * 0.61), width: Math.round(width * 0.14), height: Math.round(height * 0.04) },
+      p2Score: { x: Math.round(width * 0.84), y: Math.round(height * 0.61), width: Math.round(width * 0.14), height: Math.round(height * 0.04) },
+      format: { x: Math.round(width * 0.02), y: Math.round(height * 0.91), width: Math.round(width * 0.14), height: Math.round(height * 0.07) },
+      round: { x: Math.round(width * 0.43), y: Math.round(height * 0.77), width: Math.round(width * 0.14), height: Math.round(height * 0.05) },
+      turnNumber: { x: Math.round(width * 0.43), y: Math.round(height * 0.84), width: Math.round(width * 0.14), height: Math.round(height * 0.05) },
+      activeArrowLeft: { x: Math.round(width * 0.39), y: Math.round(height * 0.03), width: Math.round(width * 0.035), height: Math.round(height * 0.05) },
+      activeArrowRight: { x: Math.round(width * 0.575), y: Math.round(height * 0.03), width: Math.round(width * 0.035), height: Math.round(height * 0.05) },
     },
   };
 }
@@ -319,6 +333,13 @@ let state = {
     { name: 'Player 2', life: 20, heroId: null, heroName: '' },
   ],
   startingLife: 20,
+  match: {
+    format: 'Classic Constructed',
+    round: 1,
+    score: [[0, 0, 0], [0, 0, 0]],
+    turnNumber: 1,
+    activePlayer: 0,
+  },
   timer: {
     mode: 'countdown',       // 'countdown' | 'stopwatch'
     durationMs: 30 * 60000,  // configured countdown length
@@ -372,6 +393,40 @@ wss.on('connection', (ws) => {
   });
 });
 
+function clampInt(value, min, max, fallback) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return Math.min(max, Math.max(min, Math.round(number)));
+}
+
+function cleanText(value, fallback, maxLength = 40) {
+  const text = String(value ?? '').trim().slice(0, maxLength);
+  return text || fallback;
+}
+
+function cleanFont(value) {
+  return String(value || '').replace(/[^a-zA-Z0-9 ,.'\-]/g, '').slice(0, 80);
+}
+
+function cleanColor(value) {
+  const color = String(value || '').trim();
+  return /^#[0-9a-fA-F]{6}$/.test(color) ? color : null;
+}
+
+function restartGame() {
+  state.players.forEach((player) => {
+    player.life = state.startingLife;
+  });
+  state.match.round = 1;
+  state.match.score = [[0, 0, 0], [0, 0, 0]];
+  state.match.turnNumber = 1;
+  state.match.activePlayer = 0;
+  state.timer.running = false;
+  state.timer.remainingMs = state.timer.durationMs;
+  state.timer.elapsedMs = 0;
+  state.timer.lastTick = null;
+}
+
 function handleMessage(msg) {
   switch (msg.type) {
     case 'life:delta': {
@@ -391,6 +446,46 @@ function handleMessage(msg) {
         p.name = name || `Player ${Number(msg.player) + 1}`;
         state.setup.names[msg.player] = p.name;
       }
+      break;
+    }
+    case 'match:meta:set': {
+      if (msg.field === 'format') {
+        state.match.format = cleanText(msg.value, 'Classic Constructed', 40);
+      } else if (msg.field === 'round') {
+        state.match.round = clampInt(msg.value, 1, 999, state.match.round);
+      } else if (msg.field === 'turnNumber') {
+        state.match.turnNumber = clampInt(msg.value, 1, 9999, state.match.turnNumber);
+      } else if (msg.field === 'activePlayer') {
+        state.match.activePlayer = Number(msg.value) === 1 ? 1 : 0;
+      }
+      break;
+    }
+    case 'score:set': {
+      const player = Number(msg.player);
+      const field = ['wins', 'losses', 'draws'].includes(msg.field) ? msg.field : null;
+      const scoreIndex = { wins: 0, losses: 1, draws: 2 }[field];
+      if ((player === 0 || player === 1) && field) {
+        state.match.score[player][scoreIndex] = clampInt(msg.value, 0, 99, state.match.score[player][scoreIndex]);
+      }
+      break;
+    }
+    case 'player:set': {
+      const playerIndex = Number(msg.player);
+      const player = state.players[playerIndex];
+      if (!player) break;
+      if (msg.field === 'name') {
+        player.name = cleanText(msg.value, `Player ${playerIndex + 1}`, 24);
+      } else if (msg.field === 'life') {
+        player.life = clampInt(msg.value, -999, 999, player.life);
+      } else if (msg.field === 'hero') {
+        const hero = state.heroes.find((entry) => entry.id === msg.value);
+        player.heroId = hero ? hero.id : null;
+        player.heroName = hero ? hero.name : '';
+      }
+      break;
+    }
+    case 'game:restart': {
+      restartGame();
       break;
     }
     case 'match:setup:update': {
@@ -473,6 +568,11 @@ function handleMessage(msg) {
       };
       const format = setup.format === 'sage' ? 'sage' : 'cc';
       state.lastFormat = format;
+      state.match.format = format === 'sage' ? 'Silver Age' : 'Classic Constructed';
+      state.match.round = 1;
+      state.match.score = [[0, 0, 0], [0, 0, 0]];
+      state.match.turnNumber = 1;
+      state.match.activePlayer = 0;
       state.setup = {
         format,
         names: [0, 1].map((i) => String(setup.names?.[i] || `Player ${i + 1}`).slice(0, 24)),
@@ -566,6 +666,13 @@ function handleMessage(msg) {
       if ((msg.id === 'p1' || msg.id === 'p2') && msg.displayMode != null) {
         el.displayMode = msg.displayMode === 'healthbar' ? 'healthbar' : 'numeric';
       }
+      if (msg.id === 'timer' && msg.background != null) el.background = msg.background !== false;
+      if (msg.fontFamily != null) el.fontFamily = cleanFont(msg.fontFamily);
+      if (msg.color != null) {
+        const color = cleanColor(msg.color);
+        if (color) el.color = color;
+      }
+      if (msg.dropShadow != null) el.dropShadow = msg.dropShadow !== false;
       const cw = state.layout.canvas.width;
       const ch = state.layout.canvas.height;
       if (msg.width != null) el.width = Math.max(60, Math.round(msg.width));

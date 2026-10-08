@@ -109,7 +109,6 @@
     background: rgba(13,13,18,0.72); border: 1px solid rgba(224,184,75,0.4);
     border-radius: 999px; pointer-events: none;
   }
-  .timer-dot { border-radius: 50%; background: var(--brass); flex-shrink: 0; }
   .timer-digits { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--brass); }
 
   .handle {
@@ -121,6 +120,20 @@
     position: absolute; top: -22px; left: 0; font-size: 11px; color: var(--ink-dim);
     text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
   }
+  .timer-capsule.no-background { background: transparent; border-color: transparent; }
+  .legacy { display:none !important; }
+  .text-preview { width:100%; height:100%; display:flex; align-items:center; justify-content:center; text-align:center; font-weight:800; overflow:hidden; pointer-events:none; text-shadow:0 2px 5px rgba(0,0,0,.9); }
+  .life-preview { font-family:'JetBrains Mono',monospace; font-weight:900; }
+  .arrow-preview { width:0; height:0; margin:auto; border-top:18px solid transparent; border-bottom:18px solid transparent; }
+  .arrow-preview.left { border-right:30px solid var(--brass); } .arrow-preview.right { border-left:30px solid var(--brass); }
+  .inspector { position:fixed; right:0; top:0; bottom:0; width:230px; padding:18px; background:var(--panel); border-left:1px solid var(--rule); z-index:5; overflow:auto; }
+  .inspector h2 { margin:0 0 8px; font-size:14px; color:var(--brass); text-transform:uppercase; }
+  .inspector label { display:block; margin:12px 0; font-size:11px; color:var(--ink-dim); text-transform:uppercase; }
+  .inspector input[type=number] { width:100%; margin-top:5px; }
+  .inspector input[type=checkbox] { width:auto; }
+  .inspector .btn { width:100%; margin-top:8px; }
+  .stage-wrap { margin-right:230px; }
+  @media (max-width:900px) { .inspector{width:190px}.stage-wrap{margin-right:190px} }
 </style>
 </head>
 <body>
@@ -181,7 +194,7 @@
         <div class="hero-art-preview"><img id="heroArt1" alt="" /></div>
         <div class="handle"></div>
       </div>
-      <div class="el" id="elP1" data-id="p1">
+      <div class="el legacy" id="elP1" data-id="p1">
         <div class="el-label">Player 1 badge</div>
         <div class="badge p1">
           <div class="badge-name" id="name0">Player 1</div>
@@ -190,7 +203,7 @@
         </div>
         <div class="handle"></div>
       </div>
-      <div class="el" id="elP2" data-id="p2">
+      <div class="el legacy" id="elP2" data-id="p2">
         <div class="el-label">Player 2 badge</div>
         <div class="badge p2">
           <div class="badge-name" id="name1">Player 2</div>
@@ -201,11 +214,34 @@
       </div>
       <div class="el" id="elTimer" data-id="timer">
         <div class="el-label">Timer</div>
-        <div class="timer-capsule"><div class="timer-dot" id="timerDot"></div><div class="timer-digits" id="timerDigits">30:00</div></div>
+        <div class="timer-capsule"><div class="timer-digits" id="timerDigits">30:00</div></div>
         <div class="handle"></div>
       </div>
+      <div class="el" id="elP1Life" data-id="p1Life"><div class="el-label">P1 life</div><div class="text-preview life-preview" id="previewP1Life">20</div><div class="handle"></div></div>
+      <div class="el" id="elP2Life" data-id="p2Life"><div class="el-label">P2 life</div><div class="text-preview life-preview" id="previewP2Life">20</div><div class="handle"></div></div>
+      <div class="el" id="elP1Name" data-id="p1Name"><div class="el-label">P1 name</div><div class="text-preview" id="previewP1Name">Player 1</div><div class="handle"></div></div>
+      <div class="el" id="elP2Name" data-id="p2Name"><div class="el-label">P2 name</div><div class="text-preview" id="previewP2Name">Player 2</div><div class="handle"></div></div>
+      <div class="el" id="elP1HeroName" data-id="p1HeroName"><div class="el-label">P1 hero name</div><div class="text-preview" id="previewP1HeroName">Hero 1</div><div class="handle"></div></div>
+      <div class="el" id="elP2HeroName" data-id="p2HeroName"><div class="el-label">P2 hero name</div><div class="text-preview" id="previewP2HeroName">Hero 2</div><div class="handle"></div></div>
+      <div class="el" id="elP1Score" data-id="p1Score"><div class="el-label">P1 score</div><div class="text-preview" id="previewP1Score">0-0</div><div class="handle"></div></div>
+      <div class="el" id="elP2Score" data-id="p2Score"><div class="el-label">P2 score</div><div class="text-preview" id="previewP2Score">0-0</div><div class="handle"></div></div>
+      <div class="el" id="elFormat" data-id="format"><div class="el-label">Format</div><div class="text-preview" id="previewFormat">Classic Constructed</div><div class="handle"></div></div>
+      <div class="el" id="elRound" data-id="round"><div class="el-label">Round</div><div class="text-preview" id="previewRound">ROUND 1</div><div class="handle"></div></div>
+      <div class="el" id="elTurnNumber" data-id="turnNumber"><div class="el-label">Turn number</div><div class="text-preview" id="previewTurnNumber">TURN 1</div><div class="handle"></div></div>
+      <div class="el" id="elActiveArrowLeft" data-id="activeArrowLeft"><div class="el-label">Active P1 arrow</div><div class="arrow-preview left"></div><div class="handle"></div></div>
+      <div class="el" id="elActiveArrowRight" data-id="activeArrowRight"><div class="el-label">Active P2 arrow</div><div class="arrow-preview right"></div><div class="handle"></div></div>
     </div>
   </div>
+  <aside id="inspector" class="inspector">
+    <h2>Inspector</h2><div id="inspectorTitle">No selection</div>
+    <label>X <input id="inspectorX" type="number"></label><label>Y <input id="inspectorY" type="number"></label>
+    <label>Width <input id="inspectorWidth" type="number" min="1"></label><label>Height <input id="inspectorHeight" type="number" min="1"></label>
+    <label id="timerBackgroundRow"><input id="timerBackground" type="checkbox"> Timer background</label>
+    <label>Installed font <select id="inspectorFont"><option value="">Default</option></select></label>
+    <label>Text color <input id="inspectorColor" type="color" value="#F2F0E9"></label>
+    <label><input id="inspectorDropShadow" type="checkbox"> Drop shadow</label>
+    <button class="btn primary" id="applyInspector">Apply</button>
+  </aside>
 </div>
 
 <script>
@@ -215,6 +251,57 @@ let state = null;
 let scale = 1;
 
 function send(msg) { if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(msg)); }
+
+const fontCandidates = [
+  ['Arial', 'Arial, sans-serif'],
+  ['Calibri', 'Calibri, sans-serif'],
+  ['Cambria', 'Cambria, serif'],
+  ['Courier New', "'Courier New', monospace"],
+  ['Georgia', 'Georgia, serif'],
+  ['Impact', 'Impact, sans-serif'],
+  ['JetBrains Mono', "'JetBrains Mono', monospace"],
+  ['Segoe UI', "'Segoe UI', sans-serif"],
+  ['Tahoma', 'Tahoma, sans-serif'],
+  ['Times New Roman', "'Times New Roman', serif"],
+  ['Trebuchet MS', "'Trebuchet MS', sans-serif"],
+  ['Verdana', 'Verdana, sans-serif'],
+];
+
+function isFontInstalled(family) {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  const sample = 'mmmmmmmmmmlliWW0123456789';
+  const size = '72px';
+  context.font = `${size} monospace`;
+  const monoWidth = context.measureText(sample).width;
+  context.font = `${size} serif`;
+  const serifWidth = context.measureText(sample).width;
+  context.font = `${size} "${family}", monospace`;
+  const candidateMonoWidth = context.measureText(sample).width;
+  context.font = `${size} "${family}", serif`;
+  const candidateSerifWidth = context.measureText(sample).width;
+  return candidateMonoWidth !== monoWidth || candidateSerifWidth !== serifWidth;
+}
+
+function populateFontList() {
+  const select = document.getElementById('inspectorFont');
+  const current = select.value;
+  select.innerHTML = '<option value="">Default</option>';
+  fontCandidates.forEach(([label, value]) => {
+    if (!isFontInstalled(label)) return;
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = label;
+    select.appendChild(option);
+  });
+  if (current && ![...select.options].some((option) => option.value === current)) {
+    const saved = document.createElement('option');
+    saved.value = current;
+    saved.textContent = `Saved: ${current}`;
+    select.appendChild(saved);
+  }
+}
+populateFontList();
 function fmt(ms) {
   const totalSec = Math.max(0, Math.round(ms / 1000));
   return `${Math.floor(totalSec / 60)}:${String(totalSec % 60).padStart(2, '0')}`;
@@ -247,6 +334,19 @@ ws.onmessage = (evt) => {
 };
 
 let dragging = null; // { id, mode: 'move'|'resize', startX, startY, box }
+let selectedId = null;
+function selectElement(id) {
+  selectedId = id;
+  const box = state?.layout?.elements?.[id];
+  document.getElementById('inspectorTitle').textContent = id || 'No selection';
+  if (!box) return;
+  ['x','y','width','height'].forEach((key) => { document.getElementById('inspector' + key[0].toUpperCase() + key.slice(1)).value = Math.round(box[key]); });
+  document.getElementById('timerBackgroundRow').style.display = id === 'timer' ? 'block' : 'none';
+  document.getElementById('timerBackground').checked = box.background !== false;
+  document.getElementById('inspectorFont').value = box.fontFamily || '';
+  document.getElementById('inspectorColor').value = box.color || '#F2F0E9';
+  document.getElementById('inspectorDropShadow').checked = box.dropShadow === true;
+}
 
 function render(s) {
   state = s;
@@ -264,9 +364,20 @@ function render(s) {
       heroArt.style.display = 'none';
     }
   });
+  document.getElementById('previewP1Life').textContent = s.players[0].life;
+  document.getElementById('previewP2Life').textContent = s.players[1].life;
+  document.getElementById('previewP1Name').textContent = s.players[0].name;
+  document.getElementById('previewP2Name').textContent = s.players[1].name;
+  document.getElementById('previewP1HeroName').textContent = s.players[0].heroName || 'Hero 1';
+  document.getElementById('previewP2HeroName').textContent = s.players[1].heroName || 'Hero 2';
+  document.getElementById('previewP1Score').textContent = (s.match?.score?.[0] || [0,0,0]).join('-');
+  document.getElementById('previewP2Score').textContent = (s.match?.score?.[1] || [0,0,0]).join('-');
+  document.getElementById('previewFormat').textContent = s.match?.format || 'Classic Constructed';
+  document.getElementById('previewRound').textContent = `ROUND ${s.match?.round || 1}`;
+  document.getElementById('previewTurnNumber').textContent = `TURN ${s.match?.turnNumber || 1}`;
   const t = s.timer;
   document.getElementById('timerDigits').textContent = fmt(t.mode === 'countdown' ? t.remainingMs : t.elapsedMs);
-  document.getElementById('timerDot').classList.toggle('running', t.running);
+  document.querySelector('#elTimer .timer-capsule').classList.toggle('no-background', s.layout.elements.timer.background === false);
   document.getElementById('displayMode0').value = s.layout.elements.p1.displayMode || 'numeric';
   document.getElementById('displayMode1').value = s.layout.elements.p2.displayMode || 'numeric';
 
@@ -289,6 +400,7 @@ function layoutCanvas(layout) {
   positionEl('elP1', layout.elements.p1);
   positionEl('elP2', layout.elements.p2);
   positionEl('elTimer', layout.elements.timer);
+  ['p1Life','p2Life','p1Name','p2Name','p1HeroName','p2HeroName','p1Score','p2Score','format','round','turnNumber','activeArrowLeft','activeArrowRight'].forEach((id) => positionEl('el' + id[0].toUpperCase() + id.slice(1), layout.elements[id]));
 }
 
 function positionEl(elId, box) {
@@ -301,13 +413,30 @@ function positionEl(elId, box) {
   const heightPx = box.height * scale;
   if (isTimer) {
     el.querySelector('.timer-digits').style.fontSize = Math.round(heightPx * 0.42) + 'px';
-    const dot = el.querySelector('.timer-dot');
-    dot.style.width = dot.style.height = Math.round(heightPx * 0.16) + 'px';
   } else if (elId === 'elP1' || elId === 'elP2') {
     el.querySelector('.badge-name').style.fontSize = Math.round(heightPx * 0.14) + 'px';
     el.querySelector('.badge-life').style.fontSize = Math.round(heightPx * 0.55) + 'px';
     el.querySelector('.life-bar-value').style.fontSize = Math.round(heightPx * 0.34) + 'px';
+  } else {
+    const text = el.querySelector('.text-preview');
+    if (text) text.style.fontSize = Math.max(10, Math.round(heightPx * 0.55)) + 'px';
+    const arrow = el.querySelector('.arrow-preview');
+    if (arrow) {
+      const size = Math.max(6, Math.round(Math.min(box.width, box.height) * 0.42));
+      arrow.style.borderTopWidth = size + 'px';
+      arrow.style.borderBottomWidth = size + 'px';
+      arrow.style.borderLeftWidth = size + 'px';
+      arrow.style.borderRightWidth = size + 'px';
+    }
   }
+  const textTarget = el.querySelector('.text-preview, .timer-digits');
+  if (textTarget) {
+    textTarget.style.fontFamily = box.fontFamily || '';
+    textTarget.style.color = box.color || '';
+    textTarget.style.textShadow = box.dropShadow === true ? '' : 'none';
+  }
+  const arrowTarget = el.querySelector('.arrow-preview');
+  if (arrowTarget) arrowTarget.style.filter = box.dropShadow === true ? 'drop-shadow(0 2px 3px #000)' : 'none';
 }
 
 // ---- Drag & resize --------------------------------------------------
@@ -336,12 +465,36 @@ function sendLayoutBox(id, box) {
     width: box.width,
     height: box.height,
     ...(id === 'p1' || id === 'p2' ? { displayMode: box.displayMode || 'numeric' } : {}),
+    ...(id === 'timer' ? { background: box.background !== false } : {}),
+    fontFamily: box.fontFamily || '',
+    color: box.color || '',
+    dropShadow: box.dropShadow === true,
   });
 }
+
+document.getElementById('applyInspector').addEventListener('click', () => {
+  if (!selectedId || !state) return;
+  const box = state.layout.elements[selectedId];
+  if (!box) return;
+  const canvasW = state.layout.canvas.width;
+  const canvasH = state.layout.canvas.height;
+  box.width = Math.max(1, Math.min(canvasW, Math.round(Number(document.getElementById('inspectorWidth').value) || box.width)));
+  box.height = Math.max(1, Math.min(canvasH, Math.round(Number(document.getElementById('inspectorHeight').value) || box.height)));
+  box.x = Math.max(0, Math.min(canvasW - box.width, Math.round(Number(document.getElementById('inspectorX').value) || 0)));
+  box.y = Math.max(0, Math.min(canvasH - box.height, Math.round(Number(document.getElementById('inspectorY').value) || 0)));
+  if (selectedId === 'timer') box.background = document.getElementById('timerBackground').checked;
+  box.fontFamily = document.getElementById('inspectorFont').value;
+  box.color = document.getElementById('inspectorColor').value;
+  box.dropShadow = document.getElementById('inspectorDropShadow').checked;
+  positionEl(elementDomId(selectedId), box);
+  if (selectedId === 'timer') document.querySelector('#elTimer .timer-capsule').classList.toggle('no-background', box.background === false);
+  sendLayoutBox(selectedId, box);
+});
 
 document.querySelectorAll('.el').forEach((el) => {
   const id = el.dataset.id;
   const handle = el.querySelector('.handle');
+  el.addEventListener('click', (e) => { if (e.target !== handle) selectElement(id); });
 
   el.addEventListener('pointerdown', (e) => {
     if (e.target === handle) return;

@@ -6,8 +6,10 @@ with a live overlay for your stream.
 ## How it works
 
 - A small server runs on your **PC** and holds the shared state (life totals, timer).
-- Your **tablet/phone** connects to it over WiFi and opens the *controller* page —
-  the players tap to change life and start/pause the timer themselves.
+- Your **tablet/phone** connects to it over WiFi and opens the *table* page —
+  players change life there and double-tap the timer to pause or resume it.
+- The **host PC** opens the *host control panel* to edit names, heroes, portraits,
+  scores, round, format, turn state, and timer settings.
 - **OBS** (on the same PC) adds the *overlay* page as a Browser Source — it updates
   live, in real time, with a transparent background so it sits on top of your camera feed.
 
@@ -24,6 +26,7 @@ No accounts, no cloud, no app install — everything runs over your local WiFi.
 3. The terminal will print three addresses, e.g.:
    ```
    On this PC:      http://localhost:3000
+   Host control:    http://192.168.1.42:3000/host.html
    On the tablet:   http://192.168.1.42:3000/controller.html
    OBS browser src: http://192.168.1.42:3000/overlay.html
    ```
@@ -35,6 +38,18 @@ No accounts, no cloud, no app install — everything runs over your local WiFi.
    width/height to match your canvas (e.g. 1920×1080). Leave the background transparent —
    it's built to sit on top of your scene.
 
+## Host control panel
+
+Open `/host.html` on the OBS PC. The host panel controls all broadcast and match metadata:
+
+- Player names, current life, hero selection, and hero portraits
+- Scoreline for each player in `wins-losses-draws` format, such as `1-0-1`
+- Format, round number, turn number, and active player
+- Timer duration, start/pause, reset, and full game restart
+
+The tablet intentionally does not expose these settings. It only changes life totals and
+pauses/resumes the timer.
+
 ## Setting up the overlay layout
 
 Open the **Overlay layout editor** link from the setup page (`/editor.html`) in a normal
@@ -42,31 +57,43 @@ browser tab on the PC — not inside OBS.
 
 - **Resolution:** pick a preset (1080p, 1440p, 4K, 720p) or enter a custom size. This should
   match the size of your OBS canvas / the Browser Source you'll add.
-- **Move:** click and drag a badge or the timer anywhere on the canvas.
+- **Move:** click and drag any overlay element anywhere on the canvas. Player life,
+  player names, hero names, hero portraits, scores, format, round, turn number, timer,
+  and active-turn arrows are all independent elements.
 - **Resize:** drag the small brass square at the bottom-right corner of each element — text
-  scales with it automatically.
+  and active-turn arrows scale with it automatically.
 - Changes save instantly and persist even if you restart the server (stored in `layout.json`
   in the project folder).
+
+### Layout inspector
+
+Click an element to open its inspector panel. You can directly edit its X/Y position, width,
+and height. Text-capable elements also support:
+
+- Font selection from fonts detected on the host PC
+- Text color
+- Drop shadow toggle, disabled by default
+
+The timer has an additional **Timer background** toggle. The blinking timer dot has been
+removed. For fully consistent OBS output, bundled fonts can be added under `public/fonts/`
+and loaded with CSS `@font-face` definitions in both `editor.html` and `overlay.html`.
 
 Once you're happy with the layout, add the **overlay** address (not the editor) as your OBS
 Browser Source, with its width/height set to match the resolution you chose above.
 
-## Using the controller
+## Using the table tablet
 
-- Tap **+ / −** on either side to adjust that player's life by 1. **Hold** either button
-  to change it by 5 at a time, repeating while held.
-- Tap a player's name to rename them (e.g. "Alex", "Sam") — updates the overlay too.
-  You can also rename players from **⚙ Settings**.
-- The bottom bar controls the shared round timer: **▶ Start / ⏸ Pause**, and **⟲** to reset
-  it back to the configured length.
-- Tap **⚙** to open settings: switch between **Countdown** (set a round length) and
-  **Stopwatch** (counts up from zero), or reset both life totals back to 20.
+- Tap the **− / +** buttons to adjust life. Hold a button to repeat changes.
+- Double-tap the center timer to pause or resume it. Timer reset and duration changes are
+  host-only.
+
+The host panel and OBS overlay update immediately through the shared WebSocket state.
 
 ## Setting up heroes (Flesh and Blood)
 
 Because life totals in Flesh and Blood vary per hero (and the hero pool keeps growing with
-new sets), this app doesn't ship with a built-in hero database — you enter each hero once
-in **⚙ Settings → Manage heroes**, and it's remembered for every future match:
+new sets), this app keeps a local hero database in `heroes.json`. Heroes can be maintained
+from the existing setup/hero management controls and are remembered for future matches:
 
 - **Hero name**
 - **CC life** — life total when played as an adult hero in Classic Constructed
@@ -75,15 +102,10 @@ in **⚙ Settings → Manage heroes**, and it's remembered for every future matc
 Leave a life field blank if that hero doesn't exist in that format (e.g. a hero that's
 Blitz/Silver-Age-only, or CC-only).
 
-**Starting a match:** tap **⚙ Settings → 🗡 Start new match**, choose the format (**Classic
-Constructed** or **Silver Age**), then each player picks their hero from the list. Confirming
+**Starting a match:** choose the format (**Classic Constructed** or **Silver Age**), then each
+player picks their hero from the host/setup controls. Confirming
 sets both players' life totals automatically from the saved hero data, and shows the hero name
 under each player's name on the main screen.
-
-You can still play without heroes at all — the **Reset life totals to 20** button in Settings
-works as before for a quick non-FaB game.
-
-## Using the controller
 
 ## Notes
 

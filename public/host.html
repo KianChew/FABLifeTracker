@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Life Tracker — Host Control</title>
+<style>
+  :root { --bg:#0d0d12; --panel:#17151e; --field:#100f15; --ink:#f2f0e9; --dim:#96919e; --brass:#e0b84b; --p1:#d64545; --p2:#3b6fa0; --rule:rgba(255,255,255,.1); }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; background:var(--bg); color:var(--ink); font-family:system-ui,sans-serif; padding:24px; }
+  main { max-width:1100px; margin:auto; }
+  h1 { margin:0 0 6px; font-size:28px; } p { color:var(--dim); margin:0 0 22px; }
+  .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+  .card { background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:18px; }
+  .card-wide { grid-column:1/-1; }
+  h2 { margin:0 0 14px; font-size:13px; text-transform:uppercase; letter-spacing:.1em; color:var(--dim); }
+  .fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  label { display:block; color:var(--dim); font-size:11px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+  input,select { width:100%; padding:11px; border-radius:8px; border:1px solid var(--rule); background:var(--field); color:var(--ink); font:inherit; }
+  button { border:0; border-radius:8px; padding:11px 14px; color:var(--ink); background:rgba(255,255,255,.08); font-weight:700; cursor:pointer; }
+  button.primary { background:var(--brass); color:var(--bg); } button.danger { color:#ffaaa8; border:1px solid var(--p1); background:transparent; }
+  .player.p1 { border-top:3px solid var(--p1); } .player.p2 { border-top:3px solid var(--p2); }
+  .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .timer { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  #timer { font:700 38px ui-monospace,monospace; color:var(--brass); min-width:130px; }
+  .status { margin-top:16px; color:var(--dim); font-size:13px; }
+  @media (max-width:700px) { body{padding:12px}.grid,.fields{grid-template-columns:1fr}.card-wide{grid-column:auto} }
+</style>
+</head>
+<body>
+<main>
+  <h1>Host Control Panel</h1>
+  <p>All broadcast and match settings are controlled here. The tablet only changes life and timer state.</p>
+  <div class="grid">
+    <section class="card player p1"><h2>Player 1</h2><div class="fields">
+      <div><label>Name</label><input id="name0" maxlength="24"></div>
+      <div><label>Life</label><input id="life0" type="number"></div>
+      <div><label>Hero</label><select id="hero0"></select></div>
+      <div><label>Wins</label><input id="wins0" type="number" min="0" max="99"></div><div><label>Losses</label><input id="losses0" type="number" min="0" max="99"></div><div><label>Draws</label><input id="draws0" type="number" min="0" max="99"></div>
+    </div></section>
+    <section class="card player p2"><h2>Player 2</h2><div class="fields">
+      <div><label>Name</label><input id="name1" maxlength="24"></div>
+      <div><label>Life</label><input id="life1" type="number"></div>
+      <div><label>Hero</label><select id="hero1"></select></div>
+      <div><label>Wins</label><input id="wins1" type="number" min="0" max="99"></div><div><label>Losses</label><input id="losses1" type="number" min="0" max="99"></div><div><label>Draws</label><input id="draws1" type="number" min="0" max="99"></div>
+    </div></section>
+    <section class="card"><h2>Match</h2><div class="fields">
+      <div><label>Format</label><input id="format"></div>
+      <div><label>Round</label><input id="round" type="number" min="1"></div>
+      <div><label>Turn number</label><input id="turnNumber" type="number" min="1"></div>
+      <div><label>Active player</label><select id="activePlayer"><option value="0">Player 1</option><option value="1">Player 2</option></select></div>
+    </div></section>
+    <section class="card"><h2>Timer</h2><div class="timer"><div id="timer">30:00</div><button id="timerToggle" class="primary">Start</button><button id="timerReset">Reset</button></div><div class="actions"><label style="width:100%">Duration (minutes)</label><input id="duration" type="number" min="1" max="180" style="max-width:130px"><button id="durationApply">Apply duration</button></div></section>
+    <section class="card card-wide"><div class="actions"><button id="restart" class="danger">Restart game</button><a href="/overlay.html" target="_blank"><button type="button">Open overlay</button></a><a href="/editor.html" target="_blank"><button type="button">Layout editor</button></a></div><div class="status" id="status">Connecting…</div></section>
+  </div>
+</main>
+<script>
+const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+const ws = new WebSocket(`${proto}://${location.host}`);
+let state = null;
+const send = (msg) => ws.readyState === WebSocket.OPEN && ws.send(JSON.stringify(msg));
+const fmt = (ms) => { const sec=Math.max(0,Math.round(ms/1000)); return `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`; };
+const setValue = (id, value) => { const el=document.getElementById(id); if (document.activeElement !== el) el.value=value ?? ''; };
+function render(s) {
+  state=s;
+  s.players.forEach((p,i)=>{ setValue(`name${i}`,p.name); setValue(`life${i}`,p.life); const score=s.match.score[i] || [0,0,0]; ['wins','losses','draws'].forEach((field,index)=>setValue(`${field}${i}`,score[index]||0));
+    const select=document.getElementById(`hero${i}`); const current=p.heroId||''; select.innerHTML='<option value="">No hero</option>';
+    s.heroes.forEach(h=>{const o=document.createElement('option');o.value=h.id;o.textContent=h.name;select.appendChild(o);}); select.value=current;
+  });
+  setValue('format',s.match.format); setValue('round',s.match.round); setValue('turnNumber',s.match.turnNumber); setValue('duration',Math.round(s.timer.durationMs/60000));
+  document.getElementById('activePlayer').value=String(s.match.activePlayer);
+  document.getElementById('timer').textContent=fmt(s.timer.mode==='countdown'?s.timer.remainingMs:s.timer.elapsedMs);
+  document.getElementById('timerToggle').textContent=s.timer.running?'Pause':'Start';
+  document.getElementById('status').textContent=`Connected · ${s.phase === 'live' ? 'Live match' : 'Setup'}`;
+}
+ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.type==='state')render(m.state);};
+function bind(id, fn, event='change'){document.getElementById(id).addEventListener(event,fn);}
+[0,1].forEach(i=>{
+  bind(`name${i}`,e=>send({type:'player:set',player:i,field:'name',value:e.target.value}));
+  bind(`life${i}`,e=>send({type:'player:set',player:i,field:'life',value:e.target.value}));
+  bind(`hero${i}`,e=>send({type:'player:set',player:i,field:'hero',value:e.target.value||null}));
+  ['wins','losses','draws'].forEach(field=>bind(`${field}${i}`,e=>send({type:'score:set',player:i,field,value:e.target.value})));
+});
+bind('format',e=>send({type:'match:meta:set',field:'format',value:e.target.value}));
+bind('round',e=>send({type:'match:meta:set',field:'round',value:e.target.value}));
+bind('turnNumber',e=>send({type:'match:meta:set',field:'turnNumber',value:e.target.value}));
+bind('activePlayer',e=>send({type:'match:meta:set',field:'activePlayer',value:e.target.value}));
+bind('timerToggle',()=>send({type:state?.timer.running?'timer:pause':'timer:start'}),'click');
+bind('timerReset',()=>send({type:'timer:reset'}),'click');
+bind('durationApply',()=>send({type:'timer:setDuration',value:Number(document.getElementById('duration').value)*60000}),'click');
+bind('restart',()=>{if(confirm('Restart the game and reset life, score, round, turn, and timer?'))send({type:'game:restart'});},'click');
+</script>
+</body>
+</html>

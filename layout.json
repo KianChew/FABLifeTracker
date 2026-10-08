@@ -7,34 +7,121 @@
     "p1": {
       "x": 0,
       "y": 144,
-      "width": 828,
-      "height": 149,
-      "displayMode": "healthbar"
+      "width": 416,
+      "height": 126,
+      "displayMode": "numeric"
     },
     "p2": {
-      "x": 1092,
-      "y": 131,
-      "width": 828,
-      "height": 149,
-      "displayMode": "healthbar"
+      "x": 1162,
+      "y": 45,
+      "width": 416,
+      "height": 126,
+      "displayMode": "numeric"
     },
     "p1Hero": {
-      "x": 0,
-      "y": 513,
+      "x": 592,
+      "y": 241,
       "width": 370,
-      "height": 567
+      "height": 209
     },
     "p2Hero": {
-      "x": 1550,
-      "y": 513,
+      "x": 1005,
+      "y": 475,
       "width": 370,
-      "height": 567
+      "height": 209,
+      "fontFamily": ""
     },
     "timer": {
-      "x": 820,
+      "x": 840,
+      "y": 6,
+      "width": 326,
+      "height": 101,
+      "background": false
+    },
+    "p1Life": {
+      "x": 436,
+      "y": 158,
+      "width": 269,
+      "height": 86
+    },
+    "p2Life": {
+      "x": 1613,
+      "y": 86,
+      "width": 269,
+      "height": 86
+    },
+    "p1Name": {
+      "x": 91,
+      "y": 275,
+      "width": 269,
+      "height": 49,
+      "fontFamily": "",
+      "color": "#ff0000",
+      "dropShadow": false
+    },
+    "p2Name": {
+      "x": 1381,
       "y": 0,
-      "width": 421,
-      "height": 98
+      "width": 459,
+      "height": 170,
+      "fontFamily": "",
+      "color": "#ff0000"
+    },
+    "p1HeroName": {
+      "x": 41,
+      "y": 0,
+      "width": 269,
+      "height": 43
+    },
+    "p2HeroName": {
+      "x": 1577,
+      "y": 4,
+      "width": 269,
+      "height": 43
+    },
+    "p1Score": {
+      "x": 164,
+      "y": 398,
+      "width": 269,
+      "height": 43
+    },
+    "p2Score": {
+      "x": 1389,
+      "y": 745,
+      "width": 269,
+      "height": 43
+    },
+    "format": {
+      "x": 86,
+      "y": 891,
+      "width": 269,
+      "height": 76
+    },
+    "round": {
+      "x": 631,
+      "y": 776,
+      "width": 269,
+      "height": 54,
+      "fontFamily": "",
+      "color": "#000000"
+    },
+    "turnNumber": {
+      "x": 685,
+      "y": 927,
+      "width": 269,
+      "height": 54
+    },
+    "activeArrowLeft": {
+      "x": 749,
+      "y": 32,
+      "width": 67,
+      "height": 54
+    },
+    "activeArrowRight": {
+      "x": 1242,
+      "y": 20,
+      "width": 67,
+      "height": 54
     }
   }
 }

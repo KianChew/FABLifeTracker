@@ -274,12 +274,19 @@
     <div class="card">
       <div class="eyebrow">Local network</div>
       <h1>Life Tracker</h1>
-      <p class="sub">Use this PC page for match setup. Give players the controller for life and timer controls.</p>
+      <p class="sub">Use the host panel on this PC, give the tablet the table link, and add the overlay to OBS.</p>
 
       <div class="link-grid">
         <div class="row">
           <div>
-            <div class="label">Tablet controller</div>
+            <div class="label">Host control panel</div>
+            <div class="url" id="hostUrl">loading...</div>
+          </div>
+          <a class="btn" id="hostLink" href="/host.html" target="_blank">Open</a>
+        </div>
+        <div class="row">
+          <div>
+            <div class="label">Table tablet</div>
             <div class="url" id="controllerUrl">loading...</div>
           </div>
           <a class="btn" id="controllerLink" href="/controller.html" target="_blank">Open</a>
@@ -643,10 +650,13 @@ document.getElementById('importHeroesBtn').addEventListener('click', () => {
 
 fetch('/api/network').then(r => r.json()).then(({ip, port}) => {
   const controllerUrl = `http://${ip}:${port}/controller.html`;
+  const hostUrl = `http://${ip}:${port}/host.html`;
   const overlayUrl = `http://${ip}:${port}/overlay.html`;
   document.getElementById('controllerUrl').textContent = controllerUrl;
+  document.getElementById('hostUrl').textContent = hostUrl;
   document.getElementById('overlayUrl').textContent = overlayUrl;
   document.getElementById('controllerLink').href = controllerUrl;
+  document.getElementById('hostLink').href = hostUrl;
   document.getElementById('overlayLink').href = overlayUrl;
 });
 </script>
