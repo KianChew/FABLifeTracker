@@ -18,7 +18,7 @@ const LAYOUT_FILE = path.join(__dirname, 'layout.json');
 // Default element positions are expressed as fractions of the canvas so
 // they scale sensibly at any resolution.
 function defaultLayout(width = 1920, height = 1080) {
-  return {
+  const layout = {
     canvas: { width, height },
     elements: {
       p1: {
@@ -34,10 +34,12 @@ function defaultLayout(width = 1920, height = 1080) {
       p1Hero: {
         x: Math.round(width * 0.02), y: Math.round(height * 0.16),
         width: Math.round(width * 0.14), height: Math.round(height * 0.25),
+        artX: 50, artY: 50, artZoom: 100,
       },
       p2Hero: {
         x: Math.round(width * 0.84), y: Math.round(height * 0.16),
         width: Math.round(width * 0.14), height: Math.round(height * 0.25),
+        artX: 50, artY: 50, artZoom: 100,
       },
       timer: {
         x: Math.round(width * 0.5 - width * 0.09), y: Math.round(height * 0.03),
@@ -59,6 +61,20 @@ function defaultLayout(width = 1920, height = 1080) {
       activeArrowRight: { x: Math.round(width * 0.575), y: Math.round(height * 0.03), width: Math.round(width * 0.035), height: Math.round(height * 0.05) },
     },
   };
+  Object.values(layout.elements).forEach((element) => {
+    element.enabled = true;
+  });
+  return layout;
+}
+
+function mergeLayoutElements(fallbackElements, savedElements) {
+  const merged = {};
+  const ids = new Set([...Object.keys(fallbackElements), ...Object.keys(savedElements || {})]);
+  ids.forEach((id) => {
+    merged[id] = { ...(fallbackElements[id] || {}), ...(savedElements?.[id] || {}) };
+    if (merged[id].enabled == null) merged[id].enabled = true;
+  });
+  return merged;
 }
 
 function loadLayout() {
@@ -69,12 +85,7 @@ function loadLayout() {
       const fallback = defaultLayout(parsed.canvas.width, parsed.canvas.height);
       return {
         ...parsed,
-        elements: {
-          ...fallback.elements,
-          ...parsed.elements,
-          p1: { ...fallback.elements.p1, ...parsed.elements.p1 },
-          p2: { ...fallback.elements.p2, ...parsed.elements.p2 },
-        },
+        elements: mergeLayoutElements(fallback.elements, parsed.elements),
       };
     }
   } catch {
@@ -413,6 +424,12 @@ function cleanColor(value) {
   return /^#[0-9a-fA-F]{6}$/.test(color) ? color : null;
 }
 
+function finiteNumber(value) {
+  if (value === '' || value == null) return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
 function restartGame() {
   state.players.forEach((player) => {
     player.life = state.startingLife;
@@ -666,6 +683,12 @@ function handleMessage(msg) {
       if ((msg.id === 'p1' || msg.id === 'p2') && msg.displayMode != null) {
         el.displayMode = msg.displayMode === 'healthbar' ? 'healthbar' : 'numeric';
       }
+      if (msg.enabled != null) el.enabled = msg.enabled !== false;
+      if ((msg.id === 'p1Hero' || msg.id === 'p2Hero')) {
+        if (msg.artX != null) el.artX = clampInt(msg.artX, 0, 100, el.artX ?? 50);
+        if (msg.artY != null) el.artY = clampInt(msg.artY, 0, 100, el.artY ?? 50);
+        if (msg.artZoom != null) el.artZoom = clampInt(msg.artZoom, 100, 300, el.artZoom ?? 100);
+      }
       if (msg.id === 'timer' && msg.background != null) el.background = msg.background !== false;
       if (msg.fontFamily != null) el.fontFamily = cleanFont(msg.fontFamily);
       if (msg.color != null) {
@@ -675,10 +698,14 @@ function handleMessage(msg) {
       if (msg.dropShadow != null) el.dropShadow = msg.dropShadow !== false;
       const cw = state.layout.canvas.width;
       const ch = state.layout.canvas.height;
-      if (msg.width != null) el.width = Math.max(60, Math.round(msg.width));
-      if (msg.height != null) el.height = Math.max(40, Math.round(msg.height));
-      if (msg.x != null) el.x = Math.round(Math.min(Math.max(msg.x, 0), cw - el.width));
-      if (msg.y != null) el.y = Math.round(Math.min(Math.max(msg.y, 0), ch - el.height));
+      const width = finiteNumber(msg.width);
+      const height = finiteNumber(msg.height);
+      const x = finiteNumber(msg.x);
+      const y = finiteNumber(msg.y);
+      if (width != null) el.width = Math.max(60, Math.round(width));
+      if (height != null) el.height = Math.max(40, Math.round(height));
+      if (x != null) el.x = Math.round(Math.min(Math.max(x, 0), cw - el.width));
+      if (y != null) el.y = Math.round(Math.min(Math.max(y, 0), ch - el.height));
       saveLayout();
       break;
     }

@@ -66,6 +66,14 @@
   }
   .el:hover, .el.dragging { outline: 1px solid var(--brass); }
   .el.dragging { cursor: grabbing; }
+  .el.disabled { opacity: 0.32; }
+  .el.disabled::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px dashed rgba(242,240,233,0.45);
+    pointer-events: none;
+  }
 
   .badge {
     width: 100%; height: 100%;
@@ -93,7 +101,6 @@
     width: 100%; height: 100%;
     overflow: hidden;
     border: 1px solid rgba(255,255,255,0.14);
-    border-radius: 12%/10%;
     background: rgba(13,13,18,0.55);
     pointer-events: none;
   }
@@ -101,7 +108,9 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 50% 50%;
     display: block;
+    transform-origin: 50% 50%;
   }
 
   .timer-capsule {
@@ -131,6 +140,7 @@
   .inspector label { display:block; margin:12px 0; font-size:11px; color:var(--ink-dim); text-transform:uppercase; }
   .inspector input[type=number] { width:100%; margin-top:5px; }
   .inspector input[type=checkbox] { width:auto; }
+  .inspector .section-title { margin-top:16px; padding-top:12px; border-top:1px solid var(--rule); color:var(--brass); font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
   .inspector .btn { width:100%; margin-top:8px; }
   .stage-wrap { margin-right:230px; }
   @media (max-width:900px) { .inspector{width:190px}.stage-wrap{margin-right:190px} }
@@ -234,8 +244,15 @@
   </div>
   <aside id="inspector" class="inspector">
     <h2>Inspector</h2><div id="inspectorTitle">No selection</div>
+    <label><input id="inspectorEnabled" type="checkbox"> Enabled</label>
     <label>X <input id="inspectorX" type="number"></label><label>Y <input id="inspectorY" type="number"></label>
     <label>Width <input id="inspectorWidth" type="number" min="1"></label><label>Height <input id="inspectorHeight" type="number" min="1"></label>
+    <div id="heroArtInspector" style="display:none;">
+      <div class="section-title">Hero Art Crop</div>
+      <label>Crop X % <input id="inspectorArtX" type="number" min="0" max="100"></label>
+      <label>Crop Y % <input id="inspectorArtY" type="number" min="0" max="100"></label>
+      <label>Zoom % <input id="inspectorArtZoom" type="number" min="100" max="300"></label>
+    </div>
     <label id="timerBackgroundRow"><input id="timerBackground" type="checkbox"> Timer background</label>
     <label>Installed font <select id="inspectorFont"><option value="">Default</option></select></label>
     <label>Text color <input id="inspectorColor" type="color" value="#F2F0E9"></label>
@@ -307,6 +324,28 @@ function fmt(ms) {
   return `${Math.floor(totalSec / 60)}:${String(totalSec % 60).padStart(2, '0')}`;
 }
 
+function clampNumber(value, min, max, fallback) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return Math.min(max, Math.max(min, Math.round(number)));
+}
+
+function optionalNumber(value) {
+  if (value === '' || value === '-' || value === '+' || value === '.' || value === '-.' || value === '+.') return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function inputMin(input, fallback = -Infinity) {
+  const value = Number(input.dataset.min ?? input.min);
+  return Number.isFinite(value) ? value : fallback;
+}
+
+function inputMax(input, fallback = Infinity) {
+  const value = Number(input.max);
+  return Number.isFinite(value) ? value : fallback;
+}
+
 function maxLifeForPlayer(s, player) {
   const hero = s.heroes.find((h) => h.id === player.heroId);
   if (!hero) return Math.max(1, s.startingLife || 20);
@@ -341,7 +380,13 @@ function selectElement(id) {
   document.getElementById('inspectorTitle').textContent = id || 'No selection';
   if (!box) return;
   ['x','y','width','height'].forEach((key) => { document.getElementById('inspector' + key[0].toUpperCase() + key.slice(1)).value = Math.round(box[key]); });
+  const isHeroArt = id === 'p1Hero' || id === 'p2Hero';
+  document.getElementById('heroArtInspector').style.display = isHeroArt ? 'block' : 'none';
+  document.getElementById('inspectorArtX').value = box.artX ?? 50;
+  document.getElementById('inspectorArtY').value = box.artY ?? 50;
+  document.getElementById('inspectorArtZoom').value = box.artZoom ?? 100;
   document.getElementById('timerBackgroundRow').style.display = id === 'timer' ? 'block' : 'none';
+  document.getElementById('inspectorEnabled').checked = box.enabled !== false;
   document.getElementById('timerBackground').checked = box.background !== false;
   document.getElementById('inspectorFont').value = box.fontFamily || '';
   document.getElementById('inspectorColor').value = box.color || '#F2F0E9';
@@ -405,6 +450,7 @@ function layoutCanvas(layout) {
 
 function positionEl(elId, box) {
   const el = document.getElementById(elId);
+  el.classList.toggle('disabled', box.enabled === false);
   el.style.left = box.x * scale + 'px';
   el.style.top = box.y * scale + 'px';
   el.style.width = box.width * scale + 'px';
@@ -413,6 +459,8 @@ function positionEl(elId, box) {
   const heightPx = box.height * scale;
   if (isTimer) {
     el.querySelector('.timer-digits').style.fontSize = Math.round(heightPx * 0.42) + 'px';
+  } else if (elId === 'elP1Hero' || elId === 'elP2Hero') {
+    applyHeroArtCrop(el.querySelector('.hero-art-preview img'), box);
   } else if (elId === 'elP1' || elId === 'elP2') {
     el.querySelector('.badge-name').style.fontSize = Math.round(heightPx * 0.14) + 'px';
     el.querySelector('.badge-life').style.fontSize = Math.round(heightPx * 0.55) + 'px';
@@ -437,6 +485,15 @@ function positionEl(elId, box) {
   }
   const arrowTarget = el.querySelector('.arrow-preview');
   if (arrowTarget) arrowTarget.style.filter = box.dropShadow === true ? 'drop-shadow(0 2px 3px #000)' : 'none';
+}
+
+function applyHeroArtCrop(image, box) {
+  const x = box.artX ?? 50;
+  const y = box.artY ?? 50;
+  const zoom = (box.artZoom ?? 100) / 100;
+  image.style.objectPosition = `${x}% ${y}%`;
+  image.style.transformOrigin = `${x}% ${y}%`;
+  image.style.transform = `scale(${zoom})`;
 }
 
 // ---- Drag & resize --------------------------------------------------
@@ -464,6 +521,12 @@ function sendLayoutBox(id, box) {
     y: box.y,
     width: box.width,
     height: box.height,
+    enabled: box.enabled !== false,
+    ...(id === 'p1Hero' || id === 'p2Hero' ? {
+      artX: box.artX ?? 50,
+      artY: box.artY ?? 50,
+      artZoom: box.artZoom ?? 100,
+    } : {}),
     ...(id === 'p1' || id === 'p2' ? { displayMode: box.displayMode || 'numeric' } : {}),
     ...(id === 'timer' ? { background: box.background !== false } : {}),
     fontFamily: box.fontFamily || '',
@@ -482,6 +545,12 @@ document.getElementById('applyInspector').addEventListener('click', () => {
   box.height = Math.max(1, Math.min(canvasH, Math.round(Number(document.getElementById('inspectorHeight').value) || box.height)));
   box.x = Math.max(0, Math.min(canvasW - box.width, Math.round(Number(document.getElementById('inspectorX').value) || 0)));
   box.y = Math.max(0, Math.min(canvasH - box.height, Math.round(Number(document.getElementById('inspectorY').value) || 0)));
+  box.enabled = document.getElementById('inspectorEnabled').checked;
+  if (selectedId === 'p1Hero' || selectedId === 'p2Hero') {
+    box.artX = clampNumber(document.getElementById('inspectorArtX').value, 0, 100, box.artX ?? 50);
+    box.artY = clampNumber(document.getElementById('inspectorArtY').value, 0, 100, box.artY ?? 50);
+    box.artZoom = clampNumber(document.getElementById('inspectorArtZoom').value, 100, 300, box.artZoom ?? 100);
+  }
   if (selectedId === 'timer') box.background = document.getElementById('timerBackground').checked;
   box.fontFamily = document.getElementById('inspectorFont').value;
   box.color = document.getElementById('inspectorColor').value;
@@ -489,6 +558,86 @@ document.getElementById('applyInspector').addEventListener('click', () => {
   positionEl(elementDomId(selectedId), box);
   if (selectedId === 'timer') document.querySelector('#elTimer .timer-capsule').classList.toggle('no-background', box.background === false);
   sendLayoutBox(selectedId, box);
+});
+
+document.getElementById('inspectorEnabled').addEventListener('change', (e) => {
+  if (!selectedId || !state) return;
+  const box = state.layout.elements[selectedId];
+  if (!box) return;
+  box.enabled = e.target.checked;
+  positionEl(elementDomId(selectedId), box);
+  sendLayoutBox(selectedId, box);
+});
+
+function readBoundedInput(id, fallback, commit = false) {
+  const input = document.getElementById(id);
+  const value = optionalNumber(input.value);
+  if (value == null) return { value: fallback, usable: commit };
+  const min = inputMin(input);
+  const max = inputMax(input);
+  if (!commit && (value < min || value > max)) return { value: fallback, usable: false };
+  return { value: clampNumber(value, min, max, fallback), usable: true };
+}
+
+function syncInspectorNumberFields(box) {
+  document.getElementById('inspectorX').value = Math.round(box.x);
+  document.getElementById('inspectorY').value = Math.round(box.y);
+  document.getElementById('inspectorWidth').value = Math.round(box.width);
+  document.getElementById('inspectorHeight').value = Math.round(box.height);
+  if (selectedId === 'p1Hero' || selectedId === 'p2Hero') {
+    document.getElementById('inspectorArtX').value = box.artX ?? 50;
+    document.getElementById('inspectorArtY').value = box.artY ?? 50;
+    document.getElementById('inspectorArtZoom').value = box.artZoom ?? 100;
+  }
+}
+
+function applyInspectorNumberField(inputId, box, commit) {
+  const canvasW = state.layout.canvas.width;
+  const canvasH = state.layout.canvas.height;
+
+  if (inputId === 'inspectorWidth') {
+    const width = readBoundedInput(inputId, box.width, commit);
+    if (width.usable) box.width = Math.max(1, Math.min(canvasW, width.value));
+    box.x = Math.max(0, Math.min(canvasW - box.width, box.x));
+  } else if (inputId === 'inspectorHeight') {
+    const height = readBoundedInput(inputId, box.height, commit);
+    if (height.usable) box.height = Math.max(1, Math.min(canvasH, height.value));
+    box.y = Math.max(0, Math.min(canvasH - box.height, box.y));
+  } else if (inputId === 'inspectorX') {
+    const x = readBoundedInput(inputId, box.x, commit);
+    if (x.usable) box.x = Math.max(0, Math.min(canvasW - box.width, x.value));
+  } else if (inputId === 'inspectorY') {
+    const y = readBoundedInput(inputId, box.y, commit);
+    if (y.usable) box.y = Math.max(0, Math.min(canvasH - box.height, y.value));
+  } else if (selectedId === 'p1Hero' || selectedId === 'p2Hero') {
+    if (inputId === 'inspectorArtX') {
+      const artX = readBoundedInput(inputId, box.artX ?? 50, commit);
+      if (artX.usable) box.artX = artX.value;
+    } else if (inputId === 'inspectorArtY') {
+      const artY = readBoundedInput(inputId, box.artY ?? 50, commit);
+      if (artY.usable) box.artY = artY.value;
+    } else if (inputId === 'inspectorArtZoom') {
+      const artZoom = readBoundedInput(inputId, box.artZoom ?? 100, commit);
+      if (artZoom.usable) box.artZoom = artZoom.value;
+    }
+  }
+}
+
+function updateSelectedNumberField(inputId, commit = false) {
+  if (!selectedId || !state) return;
+  const box = state.layout.elements[selectedId];
+  if (!box) return;
+
+  applyInspectorNumberField(inputId, box, commit);
+  if (commit) syncInspectorNumberFields(box);
+
+  positionEl(elementDomId(selectedId), box);
+  sendLayoutBox(selectedId, box);
+}
+
+['inspectorX', 'inspectorY', 'inspectorWidth', 'inspectorHeight', 'inspectorArtX', 'inspectorArtY', 'inspectorArtZoom'].forEach((id) => {
+  document.getElementById(id).addEventListener('input', () => updateSelectedNumberField(id, false));
+  document.getElementById(id).addEventListener('change', () => updateSelectedNumberField(id, true));
 });
 
 document.querySelectorAll('.el').forEach((el) => {

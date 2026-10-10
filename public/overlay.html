@@ -36,7 +36,6 @@
     height: 100%;
     overflow: hidden;
     border: 1px solid rgba(255,255,255,0.14);
-    border-radius: 12%/10%;
     background: rgba(13,13,18,0.55);
     backdrop-filter: blur(4px);
   }
@@ -45,8 +44,10 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 50% 50%;
     display: block;
     filter: saturate(1.05) contrast(1.03);
+    transform-origin: 50% 50%;
   }
   .badge-name {
     font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
@@ -243,6 +244,7 @@ function setHeroArt(index, hero) {
 
 function positionEl(id, box) {
   const el = document.getElementById(id);
+  el.style.display = box.enabled === false ? 'none' : '';
   el.style.left = box.x + 'px';
   el.style.top = box.y + 'px';
   el.style.width = box.width + 'px';
@@ -251,6 +253,8 @@ function positionEl(id, box) {
   // Scale type and decoration to the box height so resizing "just works".
   if (id === 'elTimer') {
     el.querySelector('.timer-digits').style.fontSize = Math.round(box.height * 0.42) + 'px';
+  } else if (id === 'elP1Hero' || id === 'elP2Hero') {
+    applyHeroArtCrop(el.querySelector('.hero-art'), box);
   } else if (id === 'elP1' || id === 'elP2') {
     el.querySelector('.badge-name').style.fontSize = Math.round(box.height * 0.14) + 'px';
     el.querySelector('.badge-life').style.fontSize = Math.round(box.height * 0.55) + 'px';
@@ -273,6 +277,15 @@ function positionEl(id, box) {
   }
   const arrowTarget = el.querySelector('.arrow-module');
   if (arrowTarget) arrowTarget.style.filter = box.dropShadow === true ? 'drop-shadow(0 2px 3px #000)' : 'none';
+}
+
+function applyHeroArtCrop(image, box) {
+  const x = box.artX ?? 50;
+  const y = box.artY ?? 50;
+  const zoom = (box.artZoom ?? 100) / 100;
+  image.style.objectPosition = `${x}% ${y}%`;
+  image.style.transformOrigin = `${x}% ${y}%`;
+  image.style.transform = `scale(${zoom})`;
 }
 
 let lastLayoutKey = '';

@@ -5,123 +5,148 @@
   },
   "elements": {
     "p1": {
-      "x": 0,
-      "y": 144,
-      "width": 416,
-      "height": 126,
-      "displayMode": "numeric"
+      "x": 38,
+      "y": 32,
+      "width": 269,
+      "height": 119,
+      "displayMode": "numeric",
+      "enabled": true
     },
     "p2": {
-      "x": 1162,
-      "y": 45,
-      "width": 416,
-      "height": 126,
-      "displayMode": "numeric"
+      "x": 1613,
+      "y": 32,
+      "width": 269,
+      "height": 119,
+      "displayMode": "numeric",
+      "enabled": true
     },
     "p1Hero": {
-      "x": 592,
-      "y": 241,
-      "width": 370,
-      "height": 209
+      "x": 107,
+      "y": 220,
+      "width": 525,
+      "height": 152,
+      "artX": 50,
+      "artY": 8,
+      "artZoom": 100,
+      "enabled": true,
+      "fontFamily": "",
+      "dropShadow": false
     },
     "p2Hero": {
-      "x": 1005,
-      "y": 475,
-      "width": 370,
-      "height": 209,
-      "fontFamily": ""
+      "x": 1395,
+      "y": 204,
+      "width": 525,
+      "height": 152,
+      "artX": 50,
+      "artY": 20,
+      "artZoom": 100,
+      "enabled": true,
+      "fontFamily": "",
+      "dropShadow": false
     },
     "timer": {
-      "x": 840,
-      "y": 6,
-      "width": 326,
-      "height": 101,
-      "background": false
+      "x": 881,
+      "y": 0,
+      "width": 201,
+      "height": 89,
+      "background": false,
+      "enabled": true,
+      "fontFamily": "",
+      "dropShadow": false,
+      "color": "#f2f0e9"
     },
     "p1Life": {
-      "x": 436,
-      "y": 158,
+      "x": 38,
+      "y": 86,
       "width": 269,
-      "height": 86
+      "height": 86,
+      "enabled": true
     },
     "p2Life": {
       "x": 1613,
       "y": 86,
       "width": 269,
-      "height": 86
+      "height": 86,
+      "enabled": true
     },
     "p1Name": {
-      "x": 91,
-      "y": 275,
+      "x": 38,
+      "y": 562,
       "width": 269,
       "height": 49,
-      "fontFamily": "",
-      "color": "#ff0000",
-      "dropShadow": false
+      "enabled": true
     },
     "p2Name": {
-      "x": 1381,
-      "y": 0,
-      "width": 459,
-      "height": 170,
-      "fontFamily": "",
-      "color": "#ff0000"
+      "x": 1613,
+      "y": 562,
+      "width": 269,
+      "height": 49,
+      "enabled": true
     },
     "p1HeroName": {
-      "x": 41,
-      "y": 0,
+      "x": 38,
+      "y": 616,
       "width": 269,
-      "height": 43
+      "height": 43,
+      "enabled": true
     },
     "p2HeroName": {
-      "x": 1577,
-      "y": 4,
+      "x": 1613,
+      "y": 616,
       "width": 269,
-      "height": 43
+      "height": 43,
+      "enabled": true
     },
     "p1Score": {
-      "x": 164,
-      "y": 398,
+      "x": 38,
+      "y": 659,
       "width": 269,
-      "height": 43
+      "height": 43,
+      "enabled": true
     },
     "p2Score": {
-      "x": 1389,
-      "y": 745,
+      "x": 1613,
+      "y": 659,
       "width": 269,
-      "height": 43
+      "height": 43,
+      "enabled": true
     },
     "format": {
-      "x": 86,
-      "y": 891,
+      "x": 38,
+      "y": 983,
       "width": 269,
-      "height": 76
+      "height": 76,
+      "enabled": true,
+      "fontFamily": "",
+      "dropShadow": false
     },
     "round": {
-      "x": 631,
-      "y": 776,
+      "x": 826,
+      "y": 832,
       "width": 269,
       "height": 54,
-      "fontFamily": "",
-      "color": "#000000"
+      "enabled": true
     },
     "turnNumber": {
-      "x": 685,
-      "y": 927,
+      "x": 826,
+      "y": 907,
       "width": 269,
-      "height": 54
+      "height": 54,
+      "enabled": true
     },
     "activeArrowLeft": {
       "x": 749,
       "y": 32,
       "width": 67,
-      "height": 54
+      "height": 54,
+      "enabled": true
     },
     "activeArrowRight": {
-      "x": 1242,
-      "y": 20,
+      "x": 1104,
+      "y": 32,
       "width": 67,
-      "height": 54
+      "height": 54,
+      "enabled": true
     }
   }
 }
