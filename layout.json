@@ -5,148 +5,188 @@
   },
   "elements": {
     "p1": {
-      "x": 38,
-      "y": 32,
-      "width": 269,
-      "height": 119,
-      "displayMode": "numeric",
-      "enabled": true
+      "x": 0,
+      "y": 144,
+      "width": 416,
+      "height": 126,
+      "displayMode": "healthbar",
+      "enabled": true,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "dropShadow": false
     },
     "p2": {
-      "x": 1613,
-      "y": 32,
-      "width": 269,
-      "height": 119,
-      "displayMode": "numeric",
-      "enabled": true
+      "x": 1162,
+      "y": 45,
+      "width": 416,
+      "height": 126,
+      "displayMode": "healthbar",
+      "enabled": true,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "dropShadow": false
     },
     "p1Hero": {
-      "x": 107,
-      "y": 220,
-      "width": 525,
-      "height": 152,
-      "artX": 50,
-      "artY": 8,
-      "artZoom": 100,
-      "enabled": true,
-      "fontFamily": "",
-      "dropShadow": false
-    },
-    "p2Hero": {
-      "x": 1395,
-      "y": 204,
-      "width": 525,
-      "height": 152,
-      "artX": 50,
-      "artY": 20,
-      "artZoom": 100,
-      "enabled": true,
-      "fontFamily": "",
-      "dropShadow": false
-    },
-    "timer": {
-      "x": 881,
+      "x": 0,
       "y": 0,
-      "width": 201,
-      "height": 89,
-      "background": false,
+      "width": 278,
+      "height": 83,
+      "artX": 63,
+      "artY": 21,
+      "artZoom": 100,
       "enabled": true,
       "fontFamily": "",
       "dropShadow": false,
       "color": "#f2f0e9"
     },
-    "p1Life": {
-      "x": 38,
-      "y": 86,
-      "width": 269,
-      "height": 86,
-      "enabled": true
-    },
-    "p2Life": {
-      "x": 1613,
-      "y": 86,
-      "width": 269,
-      "height": 86,
-      "enabled": true
-    },
-    "p1Name": {
-      "x": 38,
-      "y": 562,
-      "width": 269,
-      "height": 49,
-      "enabled": true
-    },
-    "p2Name": {
-      "x": 1613,
-      "y": 562,
-      "width": 269,
-      "height": 49,
-      "enabled": true
-    },
-    "p1HeroName": {
-      "x": 38,
-      "y": 616,
-      "width": 269,
-      "height": 43,
-      "enabled": true
-    },
-    "p2HeroName": {
-      "x": 1613,
-      "y": 616,
-      "width": 269,
-      "height": 43,
-      "enabled": true
-    },
-    "p1Score": {
-      "x": 38,
-      "y": 659,
-      "width": 269,
-      "height": 43,
-      "enabled": true
-    },
-    "p2Score": {
-      "x": 1613,
-      "y": 659,
-      "width": 269,
-      "height": 43,
-      "enabled": true
-    },
-    "format": {
-      "x": 38,
-      "y": 983,
-      "width": 269,
-      "height": 76,
+    "p2Hero": {
+      "x": 1642,
+      "y": 0,
+      "width": 278,
+      "height": 83,
+      "artX": 52,
+      "artY": 33,
+      "artZoom": 100,
       "enabled": true,
       "fontFamily": "",
+      "dropShadow": false,
+      "color": "#f2f0e9"
+    },
+    "timer": {
+      "x": 0,
+      "y": 876,
+      "width": 370,
+      "height": 136,
+      "background": false,
+      "enabled": true,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "dropShadow": false,
+      "color": "#000000"
+    },
+    "p1Life": {
+      "x": 293,
+      "y": 2,
+      "width": 60,
+      "height": 94,
+      "enabled": true,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "dropShadow": false,
+      "color": "#ffffff"
+    },
+    "p2Life": {
+      "x": 1554,
+      "y": 0,
+      "width": 85,
+      "height": 96,
+      "enabled": true,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "dropShadow": false,
+      "color": "#ffffff"
+    },
+    "p1Name": {
+      "x": 26,
+      "y": 508,
+      "width": 305,
+      "height": 64,
+      "enabled": true,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "color": "#ffffff",
       "dropShadow": false
     },
-    "round": {
-      "x": 826,
-      "y": 832,
+    "p2Name": {
+      "x": 1558,
+      "y": 500,
+      "width": 307,
+      "height": 63,
+      "enabled": true,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "color": "#ffffff",
+      "dropShadow": false
+    },
+    "p1HeroName": {
+      "x": 0,
+      "y": 91,
+      "width": 394,
+      "height": 40,
+      "enabled": true,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "dropShadow": false,
+      "color": "#f2f0e9"
+    },
+    "p2HeroName": {
+      "x": 1531,
+      "y": 90,
+      "width": 389,
+      "height": 42,
+      "enabled": true,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "dropShadow": false,
+      "color": "#ffffff"
+    },
+    "p1Score": {
+      "x": 52,
+      "y": 562,
+      "width": 260,
+      "height": 45,
+      "enabled": false,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "dropShadow": false
+    },
+    "p2Score": {
+      "x": 1591,
+      "y": 562,
       "width": 269,
-      "height": 54,
-      "enabled": true
+      "height": 43,
+      "enabled": false,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "dropShadow": false,
+      "color": "#000000"
+    },
+    "format": {
+      "x": 92,
+      "y": 977,
+      "width": 199,
+      "height": 71,
+      "enabled": false,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "dropShadow": false,
+      "color": "#f2f0e9"
+    },
+    "round": {
+      "x": 24,
+      "y": 817,
+      "width": 326,
+      "height": 83,
+      "enabled": false,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "color": "#ffffff",
+      "dropShadow": false
     },
     "turnNumber": {
-      "x": 826,
-      "y": 907,
+      "x": 418,
+      "y": 1026,
       "width": 269,
       "height": 54,
-      "enabled": true
+      "enabled": false,
+      "fontFamily": "'FAB BebasNeue Regular', sans-serif",
+      "dropShadow": false,
+      "color": "#f2f0e9"
     },
     "activeArrowLeft": {
       "x": 749,
       "y": 32,
       "width": 67,
       "height": 54,
-      "enabled": true
+      "enabled": false,
+      "fontFamily": "",
+      "dropShadow": false
     },
     "activeArrowRight": {
-      "x": 1104,
-      "y": 32,
+      "x": 1242,
+      "y": 20,
       "width": 67,
       "height": 54,
-      "enabled": true
+      "enabled": false,
+      "fontFamily": "",
+      "dropShadow": false
     }
   }
 }

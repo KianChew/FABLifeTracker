@@ -46,11 +46,11 @@
     </div></section>
     <section class="card"><h2>Match</h2><div class="fields">
       <div><label>Format</label><input id="format"></div>
-      <div><label>Round</label><input id="round" type="number" min="1"></div>
+      <div><label>Round</label><input id="round" maxlength="24"></div>
       <div><label>Turn number</label><input id="turnNumber" type="number" min="1"></div>
       <div><label>Active player</label><select id="activePlayer"><option value="0">Player 1</option><option value="1">Player 2</option></select></div>
     </div></section>
-    <section class="card"><h2>Timer</h2><div class="timer"><div id="timer">30:00</div><button id="timerToggle" class="primary">Start</button><button id="timerReset">Reset</button></div><div class="actions"><label style="width:100%">Duration (minutes)</label><input id="duration" type="number" min="1" max="180" style="max-width:130px"><button id="durationApply">Apply duration</button></div></section>
+    <section class="card"><h2>Timer</h2><div class="fields"><div><label>Mode</label><select id="timerMode"><option value="countdown">Countdown</option><option value="stopwatch">Stopwatch</option></select></div></div><div class="timer"><div id="timer">30:00</div><button id="timerToggle" class="primary">Start</button><button id="timerReset">Reset</button></div><div class="actions" id="durationControls"><label style="width:100%">Duration (minutes)</label><input id="duration" type="number" min="1" max="180" style="max-width:130px"><button id="durationApply">Apply duration</button></div></section>
     <section class="card card-wide"><div class="actions"><button id="restart" class="danger">Restart game</button><a href="/overlay.html" target="_blank"><button type="button">Open overlay</button></a><a href="/editor.html" target="_blank"><button type="button">Layout editor</button></a></div><div class="status" id="status">Connecting…</div></section>
   </div>
 </main>
@@ -68,6 +68,8 @@ function render(s) {
     s.heroes.forEach(h=>{const o=document.createElement('option');o.value=h.id;o.textContent=h.name;select.appendChild(o);}); select.value=current;
   });
   setValue('format',s.match.format); setValue('round',s.match.round); setValue('turnNumber',s.match.turnNumber); setValue('duration',Math.round(s.timer.durationMs/60000));
+  document.getElementById('timerMode').value=s.timer.mode;
+  document.getElementById('durationControls').style.display=s.timer.mode==='countdown'?'flex':'none';
   document.getElementById('activePlayer').value=String(s.match.activePlayer);
   document.getElementById('timer').textContent=fmt(s.timer.mode==='countdown'?s.timer.remainingMs:s.timer.elapsedMs);
   document.getElementById('timerToggle').textContent=s.timer.running?'Pause':'Start';
@@ -87,6 +89,7 @@ bind('turnNumber',e=>send({type:'match:meta:set',field:'turnNumber',value:e.targ
 bind('activePlayer',e=>send({type:'match:meta:set',field:'activePlayer',value:e.target.value}));
 bind('timerToggle',()=>send({type:state?.timer.running?'timer:pause':'timer:start'}),'click');
 bind('timerReset',()=>send({type:'timer:reset'}),'click');
+bind('timerMode',e=>send({type:'timer:setMode',value:e.target.value}));
 bind('durationApply',()=>send({type:'timer:setDuration',value:Number(document.getElementById('duration').value)*60000}),'click');
 bind('restart',()=>{if(confirm('Restart the game and reset life, score, round, turn, and timer?'))send({type:'game:restart'});},'click');
 </script>

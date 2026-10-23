@@ -166,6 +166,27 @@ const proto = location.protocol === 'https:' ? 'wss' : 'ws';
 let ws;
 let state = null;
 
+function installBundledFonts(fonts) {
+  let style = document.getElementById('bundledFontFaces');
+  if (!style) {
+    style = document.createElement('style');
+    style.id = 'bundledFontFaces';
+    document.head.appendChild(style);
+  }
+  style.textContent = fonts.map((font) => `@font-face{font-family:'${font.family.replace(/'/g, "\\'")}';src:url('${font.url}') format('${font.format}');font-weight:400;font-style:normal;font-display:swap;}`).join('\n');
+}
+
+async function loadBundledFonts() {
+  try {
+    const res = await fetch('/api/fonts');
+    const data = await res.json();
+    installBundledFonts(Array.isArray(data.fonts) ? data.fonts : []);
+  } catch {
+    installBundledFonts([]);
+  }
+}
+loadBundledFonts();
+
 function fmt(ms) {
   const totalSec = Math.max(0, Math.round(ms / 1000));
   const m = Math.floor(totalSec / 60);
@@ -316,7 +337,7 @@ function render(s) {
   document.getElementById('p1ScoreText').textContent = score0.join('-');
   document.getElementById('p2ScoreText').textContent = score1.join('-');
   document.getElementById('formatText').textContent = s.match?.format || '';
-  document.getElementById('roundText').textContent = `ROUND ${s.match?.round || 1}`;
+  document.getElementById('roundText').textContent = s.match?.round || 'Round 1';
   document.getElementById('turnNumberText').textContent = `TURN ${s.match?.turnNumber || 1}`;
   document.getElementById('activeArrowLeft').style.visibility = s.match?.activePlayer === 0 ? 'visible' : 'hidden';
   document.getElementById('activeArrowRight').style.visibility = s.match?.activePlayer === 1 ? 'visible' : 'hidden';

@@ -467,7 +467,7 @@
     "id": "h_msyeen0gzd1m3",
     "name": "Ira, Crimson Haze",
     "ccLife": 20,
-    "sageLife": null,
+    "sageLife": 20,
     "imagePath": "/hero-images/h_msyeen0gzd1m3.webp",
     "artPath": "/hero-art/h_msyeen0gzd1m3.webp"
   },
@@ -1182,5 +1182,13 @@
     "sageLife": null,
     "imagePath": "/hero-images/h_msyeen0g7gu2y.webp",
     "artPath": "/hero-art/h_msyeen0g7gu2y.webp"
+  },
+  {
+    "id": "h_mv39huxxcufjd",
+    "name": "Ruu-di, Gem Keeper",
+    "ccLife": 40,
+    "sageLife": null,
+    "imagePath": "/hero-images/h_mv39huxxcufjd.webp",
+    "artPath": "/hero-art/h_mv39huxxcufjd.webp"
   }
 ]

@@ -14,6 +14,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ---- Layout persistence -------------------------------------------------
 const LAYOUT_FILE = path.join(__dirname, 'layout.json');
+const LAYOUT_TMP_FILE = path.join(__dirname, 'layout.json.tmp');
 
 // Default element positions are expressed as fractions of the canvas so
 // they scale sensibly at any resolution.
@@ -94,16 +95,55 @@ function loadLayout() {
   return defaultLayout();
 }
 
+let layoutSaveRunning = false;
+let layoutSaveQueued = false;
+
 function saveLayout() {
-  fs.writeFile(LAYOUT_FILE, JSON.stringify(state.layout, null, 2), () => {});
+  layoutSaveQueued = true;
+  if (layoutSaveRunning) return;
+  void flushLayoutSave();
+}
+
+async function flushLayoutSave() {
+  layoutSaveRunning = true;
+  while (layoutSaveQueued) {
+    layoutSaveQueued = false;
+    const payload = JSON.stringify(state.layout, null, 2);
+    try {
+      await fs.promises.writeFile(LAYOUT_TMP_FILE, payload);
+      await fs.promises.rename(LAYOUT_TMP_FILE, LAYOUT_FILE);
+    } catch (err) {
+      console.error(`Layout save failed: ${err.message || err}`);
+      try {
+        await fs.promises.unlink(LAYOUT_TMP_FILE);
+      } catch {}
+    }
+  }
+  layoutSaveRunning = false;
 }
 
 // ---- Hero database persistence ------------------------------------------
 const HEROES_FILE = path.join(__dirname, 'heroes.json');
 const HERO_IMAGES_DIR = path.join(__dirname, 'public', 'hero-images');
 const HERO_ART_DIR = path.join(__dirname, 'public', 'hero-art');
+const FONTS_DIR = path.join(__dirname, 'public', 'fonts');
 fs.mkdirSync(HERO_IMAGES_DIR, { recursive: true });
 fs.mkdirSync(HERO_ART_DIR, { recursive: true });
+fs.mkdirSync(FONTS_DIR, { recursive: true });
+
+function fontFormatFor(filename) {
+  const ext = path.extname(filename).toLowerCase();
+  if (ext === '.ttf') return 'truetype';
+  if (ext === '.otf') return 'opentype';
+  if (ext === '.woff') return 'woff';
+  if (ext === '.woff2') return 'woff2';
+  return null;
+}
+
+function fontFamilyFor(filename) {
+  const basename = path.basename(filename, path.extname(filename));
+  return `FAB ${basename.replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim()}`;
+}
 
 function loadHeroes() {
   try {
@@ -346,7 +386,7 @@ let state = {
   startingLife: 20,
   match: {
     format: 'Classic Constructed',
-    round: 1,
+    round: 'Round 1',
     score: [[0, 0, 0], [0, 0, 0]],
     turnNumber: 1,
     activePlayer: 0,
@@ -434,7 +474,7 @@ function restartGame() {
   state.players.forEach((player) => {
     player.life = state.startingLife;
   });
-  state.match.round = 1;
+  state.match.round = 'Round 1';
   state.match.score = [[0, 0, 0], [0, 0, 0]];
   state.match.turnNumber = 1;
   state.match.activePlayer = 0;
@@ -469,7 +509,7 @@ function handleMessage(msg) {
       if (msg.field === 'format') {
         state.match.format = cleanText(msg.value, 'Classic Constructed', 40);
       } else if (msg.field === 'round') {
-        state.match.round = clampInt(msg.value, 1, 999, state.match.round);
+        state.match.round = cleanText(msg.value, 'Round 1', 24);
       } else if (msg.field === 'turnNumber') {
         state.match.turnNumber = clampInt(msg.value, 1, 9999, state.match.turnNumber);
       } else if (msg.field === 'activePlayer') {
@@ -586,7 +626,7 @@ function handleMessage(msg) {
       const format = setup.format === 'sage' ? 'sage' : 'cc';
       state.lastFormat = format;
       state.match.format = format === 'sage' ? 'Silver Age' : 'Classic Constructed';
-      state.match.round = 1;
+      state.match.round = 'Round 1';
       state.match.score = [[0, 0, 0], [0, 0, 0]];
       state.match.turnNumber = 1;
       state.match.activePlayer = 0;
@@ -733,6 +773,25 @@ function getLocalIp() {
 
 app.get('/api/network', (req, res) => {
   res.json({ ip: getLocalIp(), port: PORT });
+});
+
+app.get('/api/fonts', async (req, res) => {
+  try {
+    const files = await fs.promises.readdir(FONTS_DIR);
+    const fonts = files
+      .map((filename) => ({ filename, format: fontFormatFor(filename) }))
+      .filter((font) => font.format)
+      .map((font) => ({
+        family: fontFamilyFor(font.filename),
+        label: path.basename(font.filename, path.extname(font.filename)).replace(/[_-]+/g, ' '),
+        url: `/fonts/${encodeURIComponent(font.filename)}`,
+        format: font.format,
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+    res.json({ fonts });
+  } catch {
+    res.json({ fonts: [] });
+  }
 });
 
 const PORT = process.env.PORT || 3000;

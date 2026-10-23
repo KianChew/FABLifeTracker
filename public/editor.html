@@ -24,7 +24,7 @@
 
   .topbar {
     display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
-    padding: 12px 20px; background: var(--panel); border-bottom: 1px solid var(--rule);
+    margin-right: 230px; padding: 12px 20px; background: var(--panel); border-bottom: 1px solid var(--rule);
   }
   .topbar h1 { font-size: 15px; margin: 0; font-weight: 700; letter-spacing: .04em; }
   .topbar h1 span { color: var(--brass); }
@@ -35,6 +35,7 @@
     border-radius: 6px; padding: 7px 10px; font-size: 13px; font-family: inherit;
   }
   input[type=number] { width: 78px; }
+  input[type=range] { width: 92px; accent-color: var(--brass); }
   .btn {
     border: none; border-radius: 8px; padding: 9px 16px; font-weight: 700; font-size: 13px;
     cursor: pointer; background: rgba(255,255,255,0.06); color: var(--ink);
@@ -59,9 +60,17 @@
     position: relative; background: rgba(255,255,255,0.02);
     outline: 1px dashed rgba(255,255,255,0.2); flex-shrink: 0;
   }
+  .reference-image {
+    position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%;
+    object-fit: fill; pointer-events: none; user-select: none;
+  }
+  .reference-name {
+    max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    color: var(--ink-dim); font-size: 12px;
+  }
 
   .el {
-    position: absolute; cursor: grab; touch-action: none;
+    position: absolute; z-index: 1; cursor: grab; touch-action: none;
     outline: 1px solid transparent;
   }
   .el:hover, .el.dragging { outline: 1px solid var(--brass); }
@@ -143,7 +152,7 @@
   .inspector .section-title { margin-top:16px; padding-top:12px; border-top:1px solid var(--rule); color:var(--brass); font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
   .inspector .btn { width:100%; margin-top:8px; }
   .stage-wrap { margin-right:230px; }
-  @media (max-width:900px) { .inspector{width:190px}.stage-wrap{margin-right:190px} }
+  @media (max-width:900px) { .inspector{width:190px}.topbar,.stage-wrap{margin-right:190px} }
 </style>
 </head>
 <body>
@@ -169,6 +178,15 @@
     </div>
 
     <button class="btn danger" id="resetLayoutBtn">Reset layout</button>
+    <input id="referenceFileInput" type="file" accept="image/png,.png" hidden />
+    <button class="btn" id="importReferenceBtn">Import reference PNG</button>
+    <div class="field" id="referenceControls" hidden>
+      <label style="cursor:pointer;"><input type="checkbox" id="referenceVisible" checked /> Show</label>
+      <label for="referenceOpacity">Opacity</label>
+      <input type="range" id="referenceOpacity" min="10" max="100" value="50" />
+      <span class="reference-name" id="referenceName"></span>
+      <button class="btn" id="clearReferenceBtn">Clear</button>
+    </div>
     <label class="field" style="cursor:pointer;">
       <input type="checkbox" id="linkPlayerSizes" checked />
       <span style="font-size:12px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.06em;">Link player sizes</span>
@@ -194,6 +212,7 @@
 
   <div class="stage-wrap">
     <div id="canvas">
+      <img id="referenceImage" class="reference-image" alt="" hidden />
       <div class="el" id="elP1Hero" data-id="p1Hero">
         <div class="el-label">Player 1 hero art</div>
         <div class="hero-art-preview"><img id="heroArt0" alt="" /></div>
@@ -236,7 +255,7 @@
       <div class="el" id="elP1Score" data-id="p1Score"><div class="el-label">P1 score</div><div class="text-preview" id="previewP1Score">0-0</div><div class="handle"></div></div>
       <div class="el" id="elP2Score" data-id="p2Score"><div class="el-label">P2 score</div><div class="text-preview" id="previewP2Score">0-0</div><div class="handle"></div></div>
       <div class="el" id="elFormat" data-id="format"><div class="el-label">Format</div><div class="text-preview" id="previewFormat">Classic Constructed</div><div class="handle"></div></div>
-      <div class="el" id="elRound" data-id="round"><div class="el-label">Round</div><div class="text-preview" id="previewRound">ROUND 1</div><div class="handle"></div></div>
+      <div class="el" id="elRound" data-id="round"><div class="el-label">Round</div><div class="text-preview" id="previewRound">Round 1</div><div class="handle"></div></div>
       <div class="el" id="elTurnNumber" data-id="turnNumber"><div class="el-label">Turn number</div><div class="text-preview" id="previewTurnNumber">TURN 1</div><div class="handle"></div></div>
       <div class="el" id="elActiveArrowLeft" data-id="activeArrowLeft"><div class="el-label">Active P1 arrow</div><div class="arrow-preview left"></div><div class="handle"></div></div>
       <div class="el" id="elActiveArrowRight" data-id="activeArrowRight"><div class="el-label">Active P2 arrow</div><div class="arrow-preview right"></div><div class="handle"></div></div>
@@ -266,6 +285,8 @@ const proto = location.protocol === 'https:' ? 'wss' : 'ws';
 const ws = new WebSocket(`${proto}://${location.host}`);
 let state = null;
 let scale = 1;
+let bundledFonts = [];
+let referenceObjectUrl = null;
 
 function send(msg) { if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(msg)); }
 
@@ -300,10 +321,31 @@ function isFontInstalled(family) {
   return candidateMonoWidth !== monoWidth || candidateSerifWidth !== serifWidth;
 }
 
+function fontStack(family) {
+  return `'${family.replace(/'/g, "\\'")}', sans-serif`;
+}
+
+function installBundledFonts(fonts) {
+  bundledFonts = fonts;
+  let style = document.getElementById('bundledFontFaces');
+  if (!style) {
+    style = document.createElement('style');
+    style.id = 'bundledFontFaces';
+    document.head.appendChild(style);
+  }
+  style.textContent = fonts.map((font) => `@font-face{font-family:'${font.family.replace(/'/g, "\\'")}';src:url('${font.url}') format('${font.format}');font-weight:400;font-style:normal;font-display:swap;}`).join('\n');
+}
+
 function populateFontList() {
   const select = document.getElementById('inspectorFont');
   const current = select.value;
   select.innerHTML = '<option value="">Default</option>';
+  bundledFonts.forEach((font) => {
+    const option = document.createElement('option');
+    option.value = fontStack(font.family);
+    option.textContent = `${font.label} (bundled)`;
+    select.appendChild(option);
+  });
   fontCandidates.forEach(([label, value]) => {
     if (!isFontInstalled(label)) return;
     const option = document.createElement('option');
@@ -318,7 +360,83 @@ function populateFontList() {
     select.appendChild(saved);
   }
 }
-populateFontList();
+
+async function loadBundledFonts() {
+  try {
+    const res = await fetch('/api/fonts');
+    const data = await res.json();
+    installBundledFonts(Array.isArray(data.fonts) ? data.fonts : []);
+  } catch {
+    installBundledFonts([]);
+  }
+  populateFontList();
+}
+loadBundledFonts();
+
+const referenceFileInput = document.getElementById('referenceFileInput');
+const referenceImage = document.getElementById('referenceImage');
+const referenceControls = document.getElementById('referenceControls');
+const referenceVisible = document.getElementById('referenceVisible');
+const referenceOpacity = document.getElementById('referenceOpacity');
+
+function updateReferenceImage() {
+  referenceImage.hidden = !referenceObjectUrl || !referenceVisible.checked;
+  referenceImage.style.opacity = String(Number(referenceOpacity.value) / 100);
+}
+
+function clearReferenceImage() {
+  if (referenceObjectUrl) URL.revokeObjectURL(referenceObjectUrl);
+  referenceObjectUrl = null;
+  referenceImage.removeAttribute('src');
+  referenceImage.hidden = true;
+  referenceControls.hidden = true;
+  referenceFileInput.value = '';
+  document.getElementById('referenceName').textContent = '';
+}
+
+document.getElementById('importReferenceBtn').addEventListener('click', () => referenceFileInput.click());
+document.getElementById('clearReferenceBtn').addEventListener('click', clearReferenceImage);
+referenceVisible.addEventListener('change', updateReferenceImage);
+referenceOpacity.addEventListener('input', updateReferenceImage);
+
+referenceFileInput.addEventListener('change', () => {
+  const file = referenceFileInput.files?.[0];
+  if (!file) return;
+  if (file.type !== 'image/png' && !file.name.toLowerCase().endsWith('.png')) {
+    alert('Choose a PNG image for the editor reference.');
+    referenceFileInput.value = '';
+    return;
+  }
+
+  const nextUrl = URL.createObjectURL(file);
+  const probe = new Image();
+  probe.onload = () => {
+    if (referenceObjectUrl) URL.revokeObjectURL(referenceObjectUrl);
+    referenceObjectUrl = nextUrl;
+    referenceImage.src = nextUrl;
+    referenceVisible.checked = true;
+    referenceControls.hidden = false;
+    document.getElementById('referenceName').textContent = `${file.name} (${probe.naturalWidth} x ${probe.naturalHeight})`;
+    updateReferenceImage();
+
+    const canvas = state?.layout?.canvas;
+    if (canvas && (canvas.width !== probe.naturalWidth || canvas.height !== probe.naturalHeight)) {
+      const usePngSize = confirm(`The PNG is ${probe.naturalWidth} x ${probe.naturalHeight}, but the editor canvas is ${canvas.width} x ${canvas.height}. Use the PNG dimensions for the overlay canvas?`);
+      if (usePngSize) send({ type: 'layout:setCanvas', width: probe.naturalWidth, height: probe.naturalHeight });
+    }
+  };
+  probe.onerror = () => {
+    URL.revokeObjectURL(nextUrl);
+    alert('The selected PNG could not be loaded.');
+    referenceFileInput.value = '';
+  };
+  probe.src = nextUrl;
+});
+
+window.addEventListener('beforeunload', () => {
+  if (referenceObjectUrl) URL.revokeObjectURL(referenceObjectUrl);
+});
+
 function fmt(ms) {
   const totalSec = Math.max(0, Math.round(ms / 1000));
   return `${Math.floor(totalSec / 60)}:${String(totalSec % 60).padStart(2, '0')}`;
@@ -418,7 +536,7 @@ function render(s) {
   document.getElementById('previewP1Score').textContent = (s.match?.score?.[0] || [0,0,0]).join('-');
   document.getElementById('previewP2Score').textContent = (s.match?.score?.[1] || [0,0,0]).join('-');
   document.getElementById('previewFormat').textContent = s.match?.format || 'Classic Constructed';
-  document.getElementById('previewRound').textContent = `ROUND ${s.match?.round || 1}`;
+  document.getElementById('previewRound').textContent = s.match?.round || 'Round 1';
   document.getElementById('previewTurnNumber').textContent = `TURN ${s.match?.turnNumber || 1}`;
   const t = s.timer;
   document.getElementById('timerDigits').textContent = fmt(t.mode === 'countdown' ? t.remainingMs : t.elapsedMs);
